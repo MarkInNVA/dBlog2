@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>OP Lab Photo Discussion</title>
+		<link rel="stylesheet" href="css/layout5.css" media="screen">
+
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dijit/themes/claro/claro.css" media="screen">
+		<!-- load dojo and provide config via dojoConfig global -->
+		<script>
+			var dojoConfig = (function(){
+				var base = location.href.split("/");
+				base.pop();
+				base = base.join("/");
+
+				return {
+					async: true,
+					isDebug: false,
+					parseOnLoad: true,
+					packages: [{
+						name: "js",
+						location: base + "/js"
+					}]
+				};
+			})();
+			
+
+		</script>
+	</head>
+  <body class="claro">
+    <div id="mainWindow" 
+         data-dojo-type="dijit.layout.BorderContainer" 
+         data-dojo-props="design:'headline', gutters:false" 
+         style="width:100%; height:100%;">
+
+		<div id="header" 
+    		data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'top'">
+        		USGS Organic Petrology Lab
+	       <div id="subheader">Photo Discussion</div>
+  		</div>
+  		
+
+		<div id="main" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'center'">    </div>
+
+      
+      <div id="footer" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'bottom'">
+        	&nbsp;
+      </div>
+      
+    </div>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>
+	 <script>
+		 require(["js/app5", "dojo/domReady!"], function(jsApp) {
+	 		jsApp.init();
+//	 		console.log("end of html require app");
+		 });
+	 </script> 
+  </body>
+
+</html>

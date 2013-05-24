@@ -1,0 +1,120 @@
+      html, body { 
+        height: 100%; width: 100%; margin: 0; 
+      } 
+      
+      body{
+        background-color:white; overflow:hidden; 
+        font-family: "Trebuchet MS"; 
+      }
+      
+      #header {
+        background-image: url(../img/banner.jpg); background-repeat: repeat-x;
+        margin: 5px;
+        border: solid 2px #224a54;
+        color:white; font-size:18pt; 
+        text-align:left; font-weight:bold; height:50px;
+      }
+      
+      #subheader {
+        font-size:small;
+        color:white;
+        padding-left:20px;
+      }
+
+      #main {
+        margin: 5px;
+        border:solid 2px #224a54;
+        -moz-border-radius: 4px;
+        height: 800px;
+      }
+      
+      /*#photo {
+      	position: absolute;
+      	top:  100;
+    	left: 300;
+      }*/      
+      .mainPhoto {
+    	width:750px;
+      }
+       
+      .thumbnail {
+      	width: 250px;
+      }
+      
+      #pl_label {
+      	font-size:18pt; 
+      	margin-left:50px;
+      }
+      #photoList {
+      	width: 275px;
+      	height: 90%;      	
+      	margin: 25px;
+      	padding: 10px;
+      	background-color: #CCCCCC;
+      	overflow: auto;
+      }
+      /*.mulc {
+      	left: 800px;
+      	top: 50px;
+      }*/
+       #markUpButton {
+      	position: absolute;
+      	top:  12px;
+    	left: 800px;
+/*      	width: 125px;
+      	height: 200px;  */      	
+       }
+       #markupList {
+      	position: absolute;
+      	top:  70px;
+    	left: 775px;
+      	width: 125px;
+      	height: 200px;      	
+      	margin: 5px;
+      	padding-left: 2em;
+  /*    	text-indent: 2em;  */
+      	background-color: #DDFFDD;
+      	border:solid 2px #224a54;
+      	overflow: auto;
+      }
+      #markUpLabel{
+      	position: absolute;
+      	top:  50px;
+    	left: 800px;	
+      }
+      
+      #markupItem {
+        left: 5px;      	
+      }
+      #markupForm {
+      	position: absolute;
+      	top:  12px;
+    	left: 950px;
+      	width: 225px;
+      	height: 125px;
+      	padding: 2em;      	
+        border:solid 2px #224a54;      	
+      }
+       #commentList {
+      	position: absolute;
+      	top:  225px;
+    	left: 775px;
+      	width: 430px;
+      	height: 200px;      	
+      	margin: 5px;
+      	padding-left: 2em;
+  /*    	text-indent: 2em;  */
+      	background-color: #99FF99;
+      	overflow: auto;
+      	border:solid 2px #224a54; 
+      }
+      
+      #footer {
+        margin: 5px;
+        border: solid 2px #224a54;
+        bottom : 5px;
+        background-color:#ecefe4;color:#3f3f3f;
+       font-size:10pt; text-align:center; height:25px;
+      }
+	  #surfaceElement {
+        /*border:solid 2px #224a54;	  		  } */

@@ -135,7 +135,7 @@ function findByName($query) {
 }
 
 function getConnection() {
-	$dbhost="igsaaaegaser003.er.usgs.gov";
+	$dbhost="igsaaaegaser003";
 	$dbuser="loader";
 	$dbpass="loader";
 	$dbname="opPhotos";
@@ -176,25 +176,24 @@ function getMarkup($id) {
 
 
 function addMarkup() {
-//	error_log('addMarkup\n', 3, 'php.log');
+	error_log('addMarkup\n', 3, '/var/tmp/php.log');
 	$request = Slim::getInstance()->request();
-	$photo_markup = json_decode($request->getBody());
-	$sql = "INSERT INTO photo_markup (fk_photos, x, y, size, label, color) VALUES (:fk_photos, :x, :y, :size, :label, :color)";
+	$photo = json_decode($request->getBody());
+	$sql = "INSERT INTO photo_markup (fk_photos, x, y, size, label) VALUES (:fk_photos, :x, :y, :size, :label)";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
-		$stmt->bindParam(':fk_photos', $photo_markup->fk_photos);
-		$stmt->bindParam(':x', $photo_markup->x);
+		$stmt->bindParam("fk_photos", $photo_markup->fk_photos);
+		$stmt->bindParam("x", $photo_markup->x);
 		$stmt->bindParam("y", $photo_markup->y);
 		$stmt->bindParam("size", $photo_markup->size);
 		$stmt->bindParam("label", $photo_markup->label);
-		$stmt->bindParam("color", $photo_markup->color);
 		$stmt->execute();
 		$photo_markup->id = $db->lastInsertId();
 		$db = null;
-		echo json_encode($photo_markup); 
+		echo json_encode($photo); 
 	} catch(PDOException $e) {
-//		error_log($e->getMessage(), 3, 'php.log');
+		error_log($e->getMessage(), 3, '/var/tmp/php.log');
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }

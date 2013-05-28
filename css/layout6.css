@@ -1,0 +1,182 @@
+      html, body { 
+        height: 100%; width: 100%; margin: 0; 
+      } 
+      
+      body{
+        background-color:white; overflow:hidden; 
+        font-family: "Trebuchet MS";
+
+        box-sizing: "border-box";
+      }
+      
+      #header {
+        background-image: url(../img/banner.jpg); background-repeat: repeat-x;
+        margin: 5px;
+        width: 1250px;
+        border: solid 2px #224a54;
+        color:white; font-size:18pt; 
+        text-align:left; font-weight:bold; height:50px;
+      }
+      
+      #subheader {
+        font-size:small;
+        color:white;
+        padding-left:20px;
+      }
+
+      #main {
+        position: absolute;
+        top:  60px;
+        left: 0px;
+        margin: 5px;
+        border:solid 2px #224a54;
+        -moz-border-radius: 4px;
+        height: 80%;
+        width: 1250px;
+        height: 750px;
+      }
+      
+      /*#photo {
+      	position: absolute;
+      	top:  100;
+    	left: 300;
+      }*/      
+/*      .mainPhoto {
+    	width:750px;
+      top: 45px;
+      }  */
+  /* tn 250, tnl 275  */     
+      .thumbnail {
+      	width: 350px;
+      }
+      
+      #pl_label {
+      	font-size:18pt; 
+      	position: absolute;
+      	top:  10px;
+    	left: 150px;
+      }
+      #pl_label2 {
+        font-size:18pt; 
+        position: absolute;
+        top:  10px;
+      left: 500px;
+      }
+      #photoList {
+      	position: absolute;
+      	top:  45px;
+    	left: 25px;
+      	
+      	width: 375px;
+      	height: 600px;      	
+      	margin: 0px;
+      	padding: 10px;
+      	background-color: #DDEEFF;
+      	overflow: auto;
+      }
+      #photoGrid {
+        position: absolute;
+        top:  45px;
+      left: 450px;
+      width: 780px; /* need an extra 20 or so pixels for scrollbar, etc    */
+
+      }
+      .field-id {
+        width: 20px;
+    }
+    .field-Name {
+        width: 200px;
+    }
+    .field-description {
+      width: 460px;
+    }
+      #photoDescription {
+      	position: absolute;
+      	top:  45px;
+    	left: 780px;
+    	
+      }
+      /*.mulc {
+      	left: 800px;
+      	top: 50px;
+      }*/
+       #markUpButton {
+      	position: absolute;
+      	top:  140px;
+    	left: 780px;
+/*      	width: 125px;
+      	height: 200px;  */      	
+       }
+       #markupList {
+      	position: absolute;
+      	top:  195px;
+    	left: 775px;
+      	width: 125px;
+      	height: 160px;      	
+      	margin: 5px;
+      	padding-left: 2em;
+  /*    	text-indent: 2em;  */
+      	background-color: #DDFFDD;
+      	border:solid 2px #224a54;
+      	overflow: auto;
+      }
+      #markUpLabel{
+      	position: absolute;
+      	top:  175px;
+    	left: 785px;	
+      }
+      
+      #markupItem {
+        left: 5px;      	
+      }
+      #markupForm {
+      	position: absolute;
+      	top:  200px;
+    	left: 950px;
+      	width: 225px;
+      	height: 95px;
+      	padding: 2em;      	
+        border:solid 2px #224a54;      	
+      }
+      #markupFormLabel {
+      	position: absolute;
+      	top:  175px;
+    	left: 955px;      	
+      }
+      #commentButton{
+      	position: absolute;
+      	top:  375px;
+    	left: 780px;      	
+      }
+      #commentLabel {
+      	position: absolute;
+      	top:  405px;
+    	left: 785px;
+      } 
+       #commentList {
+      	position: absolute;
+      	top:  425px;
+    	left: 775px;
+      	width: 430px;
+      	height: 175px;      	
+      	margin: 5px;
+      	padding-left: 2em;
+  /*    	text-indent: 2em;  */
+      	background-color: #99FF99;
+      	overflow: auto;
+      	border:solid 2px #224a54; 
+      }
+      
+      #footer {
+        position: absolute;
+        margin: 5px;
+        border: solid 2px #224a54;
+        bottom : 5px;
+        background-color:#ecefe4;color:#3f3f3f;
+       font-size:10pt; text-align:center; height:25px;
+      }
+	  #surfaceElement {
+       border:solid 5px #00ff00;	
+       top:45px;		   
+       opacity:0.0;
+      }

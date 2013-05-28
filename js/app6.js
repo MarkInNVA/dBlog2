@@ -45,10 +45,13 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 		thumbnailTemplate = '<div>Name : {Name}\n<img class="thumbnail" id="{id}" src="img/{tname}"/><hr></div>',
 //		thumbnailTemplate = '<img class="thumbnail" id="{id}" src="img/{tname}"/>',		
 		mainPhotoTemplate = '<textarea rows="5" cols="55" readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>',
-		markupListTemplate = '<ul id="markupList"> </ul>',
+		
+		markupAreaTemplate = '<div id="markupAreaDiv" >  </div>',
+
+//		markupListTemplate = '<ul id="markupList"> </ul>',
 		markupItemTemplate = '<li class="markupItem"> {label} </li> '  ,
-		markupFormTemplate = '<div id="markupForm" >  </div>',
-		markupFormInfoTemplate = '<div id="markupForm" >  </div>',
+		markupFormTemplate = '<div id="markupForm" >  </div>',  // ???????
+		markupFormInfoTemplate = '<div id="markupForm" >  </div>',  // ???????????
 		commentListTemplate = '<ul id="commentList"> </ul>',
 		commentItemTemplate = '<li class="commentItem">Received : {recv_date}, From: {from}<br>{comment} </li> '  ,
 
@@ -90,11 +93,11 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 			target: "api/index.php/comment"	
 		});
 
-		backToStartButton = dojo.create("button", {id: "back2Start", innerHTML:"Select Photo"});
-		on(backToStartButton,"click",createPickPhotoPage);
+		// backToStartButton = dojo.create("button", {id: "back2Start", innerHTML:"Select Photo"});
+		// on(backToStartButton,"click",createPickPhotoPage);
 
-		markUpButton = dojo.create("button", {id: "markUpButton", innerHTML:"Add markup"});
-		on(markUpButton,"click",createNewMarkUp);	
+		// markUpButton = dojo.create("button", {id: "markUpButton", innerHTML:"Add markup"});
+		// on(markUpButton,"click",createNewMarkUp);	
 		
 		commentButton = dojo.create("button", {id: "commentButton", innerHTML:"Add comment"});
 		on(commentButton,"click",createNewComment);				
@@ -106,14 +109,19 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
     clearMain =function () {  // clear div Main (large center section)
     	if (imageOnSurface) {
     		imageOnSurface.destroy();
-    		console.log("Destroying imageOnSurface");
+    	//	console.log("Destroying imageOnSurface");
     	};
     	if (surface) {
     		surface.destroy();
-    		console.log("Destroying surface");
+    	//	console.log("Destroying surface");
     		surface = '';
     	};
-
+    	
+    	if (dom.byId('markupAreaDiv') != null) {
+			baseFx.fadeOut({
+				node:dom.byId('markupAreaDiv')
+			}).play();    		
+    	}
 		baseFx.fadeOut({ 
 			node: dom.byId(divMainNode),
 			onEnd: domConstruct.empty(divMainNode)
@@ -145,7 +153,7 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 		placeOnMain(phList);
 
 		grid = new (declare([DataGrid, Selection]))({
-			store: thumbnailStore, // a Dojo object store
+			store: thumbnailStore, // a Dojo object store - css stuff for column widths, etc
 			columns: [
 				{label: "#", field: "id"},
 				{label: "Name", field: "Name", sortable: false},
@@ -170,8 +178,9 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
     },
 
     putPhotoOnSurface = function(photoID) {
-		var lw, lh, fw, fh, surfaceTemplate, surfaceElementDiv, photoDescription, lbl, muList, myMuItem;
+		var lw, lh, fw, fh, surfaceTemplate, surfaceElementDiv, photoDescription;
 		clearMain();
+		
 		thumbnailStore.query("/"+photoID).then(function(photo){
 
 			lw = (photo.fx /2) + 10;
@@ -179,7 +188,7 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 			fw = photo.fx /2;
 			fh = photo.fy /2;
 		
-			surfaceTemplate = '<div id="surfaceElement" style= {width:"' + lw + '", height: "'  + lh +  '"}>  </div>';
+			surfaceTemplate = '<div id="surfaceElement" style= {width:"' + lw + '"}>  </div>';
 		//	domConstruct.place(surfaceTemplate, divMainNode);
 			placeOnMain(surfaceTemplate);
 
@@ -190,40 +199,59 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 			
 			surface = gfx.createSurface("surfaceElement", lw , lh);
 
-			imageOnSurface = surface.createImage({ x: 4, y: 40, width: fw, height: fh, src: "img/" + photo.fname }); 
+			imageOnSurface = surface.createImage({ x: 5, y: 40, width: fw, height: fh, src: "img/" + photo.fname }); 
 
-			lbl = dojo.create("div", {id: "markUpLabel", innerHTML:"Existing Labels"});
-			domConstruct.place(lbl, surfaceElementDiv);	
-
-			domConstruct.place(markUpButton, surfaceElementDiv);
-
-			muList	= dojo.create("ul", {id: "markupList", class: "mulc"});
-			domConstruct.place(muList, surfaceElementDiv);
-
-			markupStore.query("/search/" + photoID).then(function(markups){
-				if (markups === 0) {
-					domConstruct.place('<li class="markupItem">None</li>',muList);								
-			//		console.log("no markups") 
-				} else  {
-			//		console.log("have " + markups.length + " markups;");
-					dojo.forEach(markups, function(oneResult) {
-	
-						var i = surface.createCircle({ cx: oneResult.x, cy: oneResult.y, r: oneResult.size }).setStroke({style: "Dash", width:3, cap:"butt", color:oneResult.color});
-						console.log(i.getUID());
-						myMuItem = '<li class="markupItem" id="' + oneResult.id + '" style= "color: ' + oneResult.color + ';"> ' + oneResult.label + '</li> ';
-						domConstruct.place(myMuItem,muList);
-					});
-					query(".markupItem").on("click", myMarkupObject.onClick);  
-				}
-			});
-
-			var f = dom.byId("footer");
-			domConstruct.place(backToStartButton,f);
-			
+			backToStartButton = dojo.create("button", {id: "back2Start", innerHTML:"Select Photo"});
+			on(backToStartButton,"click",createPickPhotoPage);
+			placeOnMain(backToStartButton);
+						
 			baseFx.fadeIn({ node: dom.byId("surfaceElement") }).play();
+			paintMarkupScreen(photoID);
 		
 		});
 	},
+	paintMarkupScreen = function(photoID) {
+		var // surfaceElementDiv = dom.byId("surfaceElement"),
+			lbl, muList, myMuItem;
+		
+		// if (dojo.buId('markupAreaDiv') != null) {
+			// domConstruct.empty(markupAreaDiv);
+		// };
+//		markupTemplate = '<div id="markupArea" >  </div>';
+		domConstruct.place(markupAreaTemplate, divMainNode);
+		
+//		placeOnMain(markupAreaTemplate); // puts markupAreaDiv on mainDiv
+	
+		lbl = dojo.create("div", {id: "markUpLabel", innerHTML:"Existing Labels"});
+		domConstruct.place(lbl, markupAreaDiv);	
+
+		markUpButton = dojo.create("button", {id: "markUpButton", innerHTML:"Add markup"});
+		on(markUpButton,"click",createNewMarkUp);
+		domConstruct.place(markUpButton, markupAreaDiv);
+
+		muList	= dojo.create("ul", {id: "markupList", class: "mulc"});
+		domConstruct.place(muList, markupAreaDiv);
+
+		markupStore.query("/search/" + photoID).then(function(markups){
+			if (markups === 0) {
+				domConstruct.place('<li class="markupItem">None</li>',muList);								
+				console.log("no markups") 
+			} else  {
+				console.log("have " + markups.length + " markups;");
+				dojo.forEach(markups, function(oneResult) {
+
+					var i = surface.createCircle({ cx: oneResult.x, cy: oneResult.y, r: oneResult.size }).setStroke({style: "Dash", width:3, cap:"butt", color:oneResult.color});
+		//			console.log(i.getUID());
+					myMuItem = '<li class="markupItem" id="' + oneResult.id + '" style= "color: ' + oneResult.color + ';"> ' + oneResult.label + '</li> ';
+					domConstruct.place(myMuItem,muList);
+				});
+				query(".markupItem").on("click", myMarkupObject.onClick);  
+			}
+		}).then(function(){
+			baseFx.fadeIn({ node: dom.byId("markupAreaDiv") }).play();			
+		});
+	},
+	
 //	require(["dojo/on", "dojo/_base/window"], function(on, win){
 
     createNewMarkUp = function() {
@@ -297,12 +325,15 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 
 			commentStore.query("/search/" + markup.fk_photos).then(function(comments){
 				console.log("have " + comments.length + " total comments;");
+				var c = 0;
 				dojo.forEach(comments, function(Result) {
 					if (Result.fk_markups == id) {
+						c += 1;;
 						myCommentItem = lang.replace(commentItemTemplate, Result);
 						domConstruct.place(myCommentItem,commNode);
 					} 
 				});
+				console.log("have ", c);				
 			});
 
 		});

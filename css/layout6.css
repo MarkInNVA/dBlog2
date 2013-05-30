@@ -10,11 +10,10 @@
       }
       
       #header {
-        background-image: url(../img/banner.jpg); background-repeat: repeat-x;
-        margin: 5px;
-        width: 1250px;
+        background-image: url(../img/banner.jpg); background-repeat: repeat-x;        
+        margin: 5px;        width: 1250px;
         border: solid 2px #224a54;
-        color:white; font-size:18pt; 
+        color:black; font-size:18pt; 
         text-align:left; font-weight:bold; height:50px;
       }
       
@@ -107,8 +106,8 @@
     	left: 780px;
     	height: 495px;
     	width: 460px;
-     	opacity:0.0;  
-     	background-color: #a3F3D3;
+     	opacity:1.0;  
+    	background-color: #a3F3D3; 
       	border:solid 2px #2f4aa4;
      }
        #markUpButton {
@@ -191,6 +190,7 @@
         margin: 5px;
         border: solid 2px #224a54;
         bottom : 5px;
+        width: 1250px;
         background-color:#ecefe4;color:#3f3f3f;
        font-size:10pt; text-align:center; height:25px;
       }

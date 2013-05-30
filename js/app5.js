@@ -1,27 +1,24 @@
 define([
-	"dojo/dom",
-	"dojo/dom-style",
-	"dojo/dom-class",
-	"dojo/dom-construct",
-	"dojo/dom-geometry",
-	"dojo/string",
-	"dojo/on",
-	"dojo/aspect",
-	"dojo/keys",
-	"dojo/_base/lang",
-	"dojo/_base/fx",
-	"dijit/registry",
-	"dojo/parser",
-	"dojo/store/JsonRest",
-	"dojo/_base/window",
-	"dojo/query",
-	"dojox/gfx",
-	"dijit/form/Form",
-	"dijit/form/Button",
+	"dojo/dom", "dojo/dom-style", "dojo/dom-class", "dojo/dom-construct", "dojo/dom-geometry",
+	
+	"dojo/string", "dojo/on", "dojo/aspect", "dojo/keys", "dojo/_base/lang", "dojo/_base/fx",
+
+	"dojo/store/JsonRest", "dojo/_base/window", "dojo/query", "dojox/gfx",
+	"dgrid/OnDemandGrid",
+	"dgrid/Selection", 
+	"dojo/store/Memory",
+	"dojo/data/ObjectStore",
+	"dojo/_base/declare", 
+
+
 	"dijit/form/ValidationTextBox",
 	"js/module"
 	], 
-function(dom, domStyle, domClass, domConstruct, domGeometry, string, on, aspect, keys, lang, baseFx, registry, parser, JsonRest, win, query, gfx, Form, Button, TextBox) {
+function(dom, domStyle, domClass, domConstruct, domGeometry, 
+		string, on, aspect, keys, lang, baseFx, 
+
+		JsonRest, win, query, gfx, DataGrid, Selection, Memory, ObjectStore , declare,
+		 TextBox) {
 	
 	"use strict"
     var store = null,

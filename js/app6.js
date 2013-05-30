@@ -1,40 +1,49 @@
 define([
-	"dojo/dom",
-	"dojo/dom-style",
-	"dojo/dom-class",
-	"dojo/dom-construct",
-	"dojo/dom-geometry",
-	"dojo/string",
-	"dojo/on",
+	"dojo/dom", "dojo/dom-construct", "dojo/on", "dojo/_base/fx",
+    "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/_base/declare", 
+    "dojo/_base/array", "dojo/_base/lang", "dojo/query", "dojox/gfx",
+  
+	// "dojo/dom-style",
+	// "dojo/dom-class",
+	
+	// "dojo/dom-geometry",
+	// "dojo/string",
+	
 
-	"dojo/aspect",
-	"dojo/keys",
-	"dojo/_base/lang",
-	"dojo/_base/fx",
-	"dijit/registry",
-	"dojo/parser",
+	// "dojo/aspect",
+	// "dojo/keys",
+	// 
+	// 
+	// "dijit/registry",
+	
+//	"dojo/parser",
+
 	"dojo/store/JsonRest",
-	"dojo/_base/window",
+	"dojo/parser",
+	// "dojo/_base/window",
 
-	"dojo/query",
-	"dojox/gfx",
-	"dgrid/OnDemandGrid",
-	"dgrid/Selection", 
-	"dojo/store/Memory",
-	"dojo/data/ObjectStore",
-	"dojo/_base/declare", 
-//	"dijit/form/Form",
-//	"dijit/form/Button",
-//	"dijit/form/ValidationTextBox",
+	// 
+	// 
+	// 
+	// 
+	// "dojo/store/Memory",
+	// "dojo/data/ObjectStore",
+	// 
+
 	"js/module"
 	], 
-function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on, 
-			aspect, keys, lang, baseFx, registry, parser, JsonRest, win, 
-			query, gfx, DataGrid, Selection, Memory, ObjectStore , declare
+function( dom, domConstruct, on, baseFx,
+         DataGrid, Selection, declare,
+         arrayUtil, lang, query, gfx,
+         JsonRest, parser
+	//domStyle, domClass,  domGeometry, string,  
+//			aspect, keys,   registry, // parser, 
+	//		JsonRest, win, 
+    //      Memory, ObjectStore , 
 	//		Form, Button, TextBox
 	) {
 	"use strict";
-    var store = null,
+    var // store = null,
 		thumbnailStore,
 		markupStore,
 		commentStore,
@@ -49,9 +58,9 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 		markupAreaTemplate = '<div id="markupAreaDiv" >  </div>',
 
 //		markupListTemplate = '<ul id="markupList"> </ul>',
-		markupItemTemplate = '<li class="markupItem"> {label} </li> '  ,
+//		markupItemTemplate = '<li class="markupItem"> {label} </li> '  ,
 		markupFormTemplate = '<div id="markupForm" >  </div>',  // ???????
-		markupFormInfoTemplate = '<div id="markupForm" >  </div>',  // ???????????
+//		markupFormInfoTemplate = '<div id="markupForm" >  </div>',  // ???????????
 		commentListTemplate = '<ul id="commentList"> </ul>',
 		commentItemTemplate = '<li class="commentItem">Received : {recv_date}, From: {from}<br>{comment} </li> '  ,
 
@@ -62,22 +71,34 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 		divMainNode = dom.byId("main"),
 		surface,
 		imageOnSurface,
+	
 		
     startup = function() {
 		// create objects, stores, and a couple buttons
-    //    parser.parse();
+   //     parser.parse();
+//		parser.parse()
+
+		// parser.parse().then(function(instances){
+		    // array.forEach(instances, function(instance){
+		      // console.log(instances);
+		    // });
+		// });
+
+//
 
 		myPhotoObject = {
 			id: "myPhotoObject", 
 			photoId: 0,
-			onClick: function(e) {
+			onClick: function() {
 				myPhotoObject.photoId=this.id;
 				putPhotoOnSurface(this.id);
 			}
 		};
 		myMarkupObject= {
 			id: "myMarkupObject", 
-			onClick: function(e) {
+			photoId: 0,
+			mkarkupID: 0,
+			onClick: function() {
 				clickMarkUpItem(this.id);
 			}
 		};
@@ -93,13 +114,13 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 			target: "api/index.php/comment"	
 		});
 
-		// backToStartButton = dojo.create("button", {id: "back2Start", innerHTML:"Select Photo"});
-		// on(backToStartButton,"click",createPickPhotoPage);
+		backToStartButton = domConstruct.create("button", {id: "back2Start", innerHTML:"Select Photo"});
+		on(backToStartButton,"click",createPickPhotoPage);
 
-		// markUpButton = dojo.create("button", {id: "markUpButton", innerHTML:"Add markup"});
-		// on(markUpButton,"click",createNewMarkUp);	
+		markUpButton = domConstruct.create("button", {id: "markUpButton", innerHTML:"Add markup"});
+		on(markUpButton,"click",createNewMarkUp);	
 		
-		commentButton = dojo.create("button", {id: "commentButton", innerHTML:"Add comment"});
+		commentButton = domConstruct.create("button", {id: "commentButton", innerHTML:"Add comment"});
 		on(commentButton,"click",createNewComment);				
 		
 		createPickPhotoPage();  /* show them the photos & let them pick one */
@@ -107,21 +128,21 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
     },
 
     clearMain =function () {  // clear div Main (large center section)
-    	if (imageOnSurface) {
-    		imageOnSurface.destroy();
-    	//	console.log("Destroying imageOnSurface");
-    	};
-    	if (surface) {
-    		surface.destroy();
-    	//	console.log("Destroying surface");
-    		surface = '';
-    	};
-    	
-    	if (dom.byId('markupAreaDiv') != null) {
-			baseFx.fadeOut({
-				node:dom.byId('markupAreaDiv')
-			}).play();    		
-    	}
+		if (imageOnSurface) {
+			imageOnSurface.destroy();
+		//	console.log("Destroying imageOnSurface");
+		}
+		if (surface) {
+			surface.destroy();
+		//	console.log("Destroying surface");
+			surface = '';
+		}
+
+		// if (dom.byId('markupAreaDiv') != null) {
+			// baseFx.fadeOut({
+				// node:dom.byId('markupAreaDiv')
+			// }).play();
+		// }
 		baseFx.fadeOut({ 
 			node: dom.byId(divMainNode),
 			onEnd: domConstruct.empty(divMainNode)
@@ -135,21 +156,26 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 		domConstruct.place(item,divMainNode);
     } ,
     
+    placeOnMarkup =function (item) {  // add item to  div Main (large center section)
+    	var divMarkupArea = dom.byId("markupAreaDiv")
+		domConstruct.place(item,divMarkupArea);
+    } ,
+        
     createPickPhotoPage = function () {
-		var lbl, lbl2, phList, myListItem, grid, store, myGridDiv;
+		var lbl, lbl2, phList, myListItem, grid,  myGridDiv;
 
 		clearMain();
 
-		lbl = dojo.create("div", {id: "pl_label", innerHTML:"Select photo"});
+		lbl = domConstruct.create("div", {id: "pl_label", innerHTML:"Select photo"});
 		placeOnMain(lbl);
 
-		lbl2 = dojo.create("div", {id: "pl_label2", innerHTML:"or row"});
+		lbl2 = domConstruct.create("div", {id: "pl_label2", innerHTML:"or row"});
 		placeOnMain(lbl2);
 
-		myGridDiv = dojo.create("div", {id: "photoGrid"});
+		myGridDiv = domConstruct.create("div", {id: "photoGrid"});
 		placeOnMain(myGridDiv);
 
-		phList	= dojo.create("ul", {id: "photoList"});
+		phList	= domConstruct.create("ul", {id: "photoList"});
 		placeOnMain(phList);
 
 		grid = new (declare([DataGrid, Selection]))({
@@ -163,12 +189,12 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 		}, "photoGrid");
 		
 		grid.on("dgrid-select", function(event){
-			putPhotoOnSurface(event.rows[0].id);
 			myPhotoObject.photoId = event.rows[0].id;
+			putPhotoOnSurface(event.rows[0].id);
 		});
 
 		thumbnailStore.query().then(function(resultPhotos){
-			dojo.forEach(resultPhotos, function(oneResult) {
+			arrayUtil.forEach(resultPhotos, function(oneResult) {
 				myListItem = lang.replace(thumbnailTemplate, oneResult);
 				domConstruct.place(myListItem,phList);
 			});
@@ -178,7 +204,7 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
     },
 
     putPhotoOnSurface = function(photoID) {
-		var lw, lh, fw, fh, surfaceTemplate, surfaceElementDiv, photoDescription;
+		var lw, lh, fw, fh, surfaceTemplate, surfaceElementDiv, photoDescription, markupAreaDiv;
 		clearMain();
 		
 		thumbnailStore.query("/"+photoID).then(function(photo){
@@ -201,47 +227,57 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 
 			imageOnSurface = surface.createImage({ x: 5, y: 40, width: fw, height: fh, src: "img/" + photo.fname }); 
 
-			backToStartButton = dojo.create("button", {id: "back2Start", innerHTML:"Select Photo"});
-			on(backToStartButton,"click",createPickPhotoPage);
+			// backToStartButton = dojo.create("button", {id: "back2Start", innerHTML:"Select Photo"});
+			// on(backToStartButton,"click",createPickPhotoPage);
 			placeOnMain(backToStartButton);
+			
+			
+		domConstruct.place(markupAreaTemplate, surfaceElementDiv);
+        markupAreaDiv = dom.byId("markupAreaDiv");
+		var lbl = domConstruct.create("div", {id: "markUpLabel", innerHTML:"Existing Labels"});
+	//	domConstruct.place(lbl, markupAreaDiv);	
 						
 			baseFx.fadeIn({ node: dom.byId("surfaceElement") }).play();
+			
+		
 			paintMarkupScreen(photoID);
 		
 		});
 	},
 	paintMarkupScreen = function(photoID) {
 		var // surfaceElementDiv = dom.byId("surfaceElement"),
-			lbl, muList, myMuItem;
+			// lbl, 
+			muList, myMuItem, markupAreaDiv;
 		
 		// if (dojo.buId('markupAreaDiv') != null) {
 			// domConstruct.empty(markupAreaDiv);
 		// };
 //		markupTemplate = '<div id="markupArea" >  </div>';
-		domConstruct.place(markupAreaTemplate, divMainNode);
+/////		domConstruct.place(markupAreaTemplate, divMainNode);
 		
 //		placeOnMain(markupAreaTemplate); // puts markupAreaDiv on mainDiv
 	
-		lbl = dojo.create("div", {id: "markUpLabel", innerHTML:"Existing Labels"});
-		domConstruct.place(lbl, markupAreaDiv);	
+		///// lbl = dojo.create("div", {id: "markUpLabel", innerHTML:"Existing Labels"});
+		///// domConstruct.place(lbl, markupAreaDiv);	
 
-		markUpButton = dojo.create("button", {id: "markUpButton", innerHTML:"Add markup"});
-		on(markUpButton,"click",createNewMarkUp);
-		domConstruct.place(markUpButton, markupAreaDiv);
+	//	markUpButton = domConstruct.create("button", {id: "markUpButton", innerHTML:"Add markup"});
+	//	on(markUpButton,"click",createNewMarkUp);
+		placeOnMarkup(markUpButton);
+//		domConstruct.place(markUpButton, markupAreaDiv);
 
-		muList	= dojo.create("ul", {id: "markupList", class: "mulc"});
-		domConstruct.place(muList, markupAreaDiv);
+		muList	= domConstruct.create("ul", {id: "markupList", class: "mulc"},markupAreaDiv);
+	//	domConstruct.place(muList, markupAreaDiv);
 
 		markupStore.query("/search/" + photoID).then(function(markups){
 			if (markups === 0) {
 				domConstruct.place('<li class="markupItem">None</li>',muList);								
-				console.log("no markups") 
+				console.log("no markups"); 
 			} else  {
 				console.log("have " + markups.length + " markups;");
-				dojo.forEach(markups, function(oneResult) {
+				arrayUtil.forEach(markups, function(oneResult) {
 
 					var i = surface.createCircle({ cx: oneResult.x, cy: oneResult.y, r: oneResult.size }).setStroke({style: "Dash", width:3, cap:"butt", color:oneResult.color});
-		//			console.log(i.getUID());
+					console.log(i.getUID());
 					myMuItem = '<li class="markupItem" id="' + oneResult.id + '" style= "color: ' + oneResult.color + ';"> ' + oneResult.label + '</li> ';
 					domConstruct.place(myMuItem,muList);
 				});
@@ -252,9 +288,10 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 		});
 	},
 	
-//	require(["dojo/on", "dojo/_base/window"], function(on, win){
+
 
     createNewMarkUp = function() {
+
 		var handle = imageOnSurface.connect("onclick",function(e) {
 		//	console.log("X: ",e.layerX,"Y: ",e.layerY);
 			markupStore.put({
@@ -294,10 +331,10 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 
 		markupStore.query("/" + id).then(function(markup){
 
-			lbl = dojo.create("div", {id: "markupFormLabel", innerHTML:"Markup Info"});
+			lbl = domConstruct.create("div", {id: "markupFormLabel", innerHTML:"Markup Info"});
 			domConstruct.place(lbl, divMainNode);	
 
-			lbl2 = dojo.create("div", {id: "commentLabel", innerHTML:"Comments"});
+			lbl2 = domConstruct.create("div", {id: "commentLabel", innerHTML:"Comments"});
 			domConstruct.place(lbl2, divMainNode);	
 
 			// console.log(markup);  
@@ -326,9 +363,9 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 			commentStore.query("/search/" + markup.fk_photos).then(function(comments){
 				console.log("have " + comments.length + " total comments;");
 				var c = 0;
-				dojo.forEach(comments, function(Result) {
-					if (Result.fk_markups == id) {
-						c += 1;;
+				arrayUtil.forEach(comments, function(Result) {
+					if (Result.fk_markups === id) {
+						c += 1;
 						myCommentItem = lang.replace(commentItemTemplate, Result);
 						domConstruct.place(myCommentItem,commNode);
 					} 
@@ -337,12 +374,12 @@ function(	dom, domStyle, domClass, domConstruct, domGeometry, string, on,
 			});
 
 		});
-    },
+    };//,
   
-    renderItem = function(item, refNode, posn) {
+  //  renderItem = function(item, refNode, posn) {
         // summary:
         //      Create HTML string to represent the given item
-    };
+ //   };
     return {
         init: function() {
             // proceed directly with startup

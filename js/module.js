@@ -1,3 +1,3 @@
 
-define(["dijit/layout/BorderContainer", "dijit/layout/TabContainer", "dijit/layout/ContentPane"], function() {
+define(["dijit/layout/BorderContainer",  "dijit/layout/ContentPane"], function() {
 });

@@ -272,7 +272,7 @@ function( dom, domConstruct, on, baseFx,
 			placeOnMarkup(markupFormTemplate);
 			muNode = dom.byId("markupForm");
 		}
-    	
+    	 
 		muNode = dom.byId("markupForm");
 		
 		placeOnMarkup(domConstruct.create("div", {id: "markupFormLabel", innerHTML:"Markup Info"}));	

@@ -1,20 +1,25 @@
       html, body { 
-        height: 100%; width: 100%; margin: 0; 
+        height: 795px; width: 1260px; margin: 0; 
+        
       } 
       
       body{
-        background-color:white; overflow:hidden; 
+        background-color:white; overflow:auto; 
         font-family: "Trebuchet MS";
 
+        overflow: auto;
         box-sizing: "border-box";
       }
       
       #header {
         background-image: url(../img/banner.jpg); background-repeat: repeat-x;        
-        margin: 5px;        width: 1250px;
+        margin: 5px;        
+        width: 1250px;
         border: solid 2px #224a54;
         color:black; font-size:18pt; 
-        text-align:left; font-weight:bold; height:50px;
+        text-align:left; 
+        font-weight:bold; 
+        height:50px;
       }
       
       #subheader {
@@ -23,14 +28,26 @@
         padding-left:20px;
       }
 
+      #footer {
+        position: absolute;
+        margin-left: 5px;
+        border: solid 2px #224a54;
+        top : 55px;
+        width: 1250px;
+        background-color:#ecefe4;color:#3f3f3f;
+        font-size:10pt; 
+        text-align:center; 
+        height:35px;
+      }
+      
       #main {
         position: absolute;
-        top:  60px;
+        top:  92px;
         left: 0px;
-        margin: 5px;
+        margin-left: 5px;
         border:solid 2px #224a54;
         -moz-border-radius: 4px;
-        height: 80%;
+/*        height: 80%; */
         width: 1250px;
         height: 750px;
       }
@@ -104,7 +121,7 @@
       	position: absolute;
       	top:  155px;
     	left: 780px;
-    	height: 495px;
+    	height: 585px;
     	width: 460px;
      	opacity:1.0;  
     	background-color: #a3F3D3; 
@@ -141,60 +158,60 @@
       }
       #markupForm {
       	position: absolute;
-      	top:  200px;
-    	left: 950px;
+      	top:  50px;
+    	left: 175px;
       	width: 225px;
-      	height: 95px;
+      	height: 110px;
       	padding: 2em;      	
         border:solid 2px #224a54;      	
       }
       #markupFormLabel {
       	position: absolute;
-      	top:  175px;
-    	left: 955px;      	
+      	top:  35px;
+    	left: 185px;      	
       }
+      #adjustButton {
+      	position: absolute;
+      	top:  175px;
+    	left: 235px;      	
+      	
+      }
+      
       #commentButton{
       	position: absolute;
-      	top:  375px;
-    	left: 780px;      	
+      	top:  235px;
+    	left: 5px;      	
       }
       #commentLabel {
       	position: absolute;
-      	top:  405px;
-    	left: 785px;
+      	top:  240px;
+    	left: 185px;
       }
        
-       #commentList {
+       #commentForm {
       	position: absolute;
-      	top:  425px;
-    	left: 775px;
-      	width: 430px;
+      	top:  260px;
+    	left: 5px;
+      	width: 420px;
       	height: 175px;      	
-      	margin: 5px;
+      	margin: 0px;
       	padding-left: 2em;
   /*    	text-indent: 2em;  */
-      	background-color: #99FF99;
+ /*     	background-color: #99FF99;  */
       	overflow: auto;
       	border:solid 2px #224a54; 
       }
       
       #back2Start{
         text-align=center;
+        margin:5px;
+
 /*        width:100% */
 /*      	text-align: center;  */
       }
       
-      #footer {
-        position: absolute;
-        margin: 5px;
-        border: solid 2px #224a54;
-        bottom : 5px;
-        width: 1250px;
-        background-color:#ecefe4;color:#3f3f3f;
-       font-size:10pt; text-align:center; height:25px;
-      }
 	  #surfaceElement {
-       border:solid 5px #00ff00;	
+       border:solid 5px #0f0ff00;	/* doesn't seem to matter  */
        top:45px;	
        height: 740px;	   
        opacity:0.0;

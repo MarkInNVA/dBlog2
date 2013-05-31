@@ -242,7 +242,7 @@ function( dom, domConstruct, on, baseFx,
 //		muList = '<ul id="markupList" class="mulc"> </ul>';
 		muList	= domConstruct.create("ul", {id: "markupList", class: "mulc"},"markupAreaDiv");
 	//	placeOnMarkup(muList);
-		
+	   	
 	//	var divMarkupList = dom.byId("markupList");
 		
 		markupStore.query("/search/" + photoID).then(function(markups){

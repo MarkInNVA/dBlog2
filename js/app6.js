@@ -57,7 +57,7 @@ function( dom, domConstruct, on, baseFx,
 		
 		markupAreaTemplate = '<div id="markupAreaDiv" >  </div>',
 
-//		markupListTemplate = '<ul id="markupList"> </ul>',
+//		markupListTemplate = '<ul id="markupList" class=mulc""> </ul>',
 //		markupItemTemplate = '<li class="markupItem"> {label} </li> '  ,
 		markupFormTemplate = '<div id="markupForm" >  </div>',  // ???????
 //		markupFormInfoTemplate = '<div id="markupForm" >  </div>',  // ???????????
@@ -69,22 +69,14 @@ function( dom, domConstruct, on, baseFx,
 		commentButton,
 
 		divMainNode = dom.byId("main"),
+		
 		surface,
 		imageOnSurface,
+		divSurfaceElement,
 	
 		
     startup = function() {
 		// create objects, stores, and a couple buttons
-   //     parser.parse();
-//		parser.parse()
-
-		// parser.parse().then(function(instances){
-		    // array.forEach(instances, function(instance){
-		      // console.log(instances);
-		    // });
-		// });
-
-//
 
 		myPhotoObject = {
 			id: "myPhotoObject", 
@@ -157,7 +149,7 @@ function( dom, domConstruct, on, baseFx,
     } ,
     
     placeOnMarkup =function (item) {  // add item to  div Main (large center section)
-    	var divMarkupArea = dom.byId("markupAreaDiv")
+		var divMarkupArea = dom.byId("markupAreaDiv");
 		domConstruct.place(item,divMarkupArea);
     } ,
         
@@ -204,7 +196,7 @@ function( dom, domConstruct, on, baseFx,
     },
 
     putPhotoOnSurface = function(photoID) {
-		var lw, lh, fw, fh, surfaceTemplate, surfaceElementDiv, photoDescription, markupAreaDiv;
+		var lw, lh, fw, fh, surfaceTemplate, photoDescription, markupAreaDiv, lbl;
 		clearMain();
 		
 		thumbnailStore.query("/"+photoID).then(function(photo){
@@ -215,59 +207,44 @@ function( dom, domConstruct, on, baseFx,
 			fh = photo.fy /2;
 		
 			surfaceTemplate = '<div id="surfaceElement" style= {width:"' + lw + '"}>  </div>';
-		//	domConstruct.place(surfaceTemplate, divMainNode);
+
 			placeOnMain(surfaceTemplate);
 
-			surfaceElementDiv = dom.byId("surfaceElement");
+			divSurfaceElement = dom.byId("surfaceElement");
 			
 			photoDescription = lang.replace(mainPhotoTemplate, photo);
-			domConstruct.place(photoDescription, surfaceElementDiv);			
+			domConstruct.place(photoDescription, divSurfaceElement);			
 			
 			surface = gfx.createSurface("surfaceElement", lw , lh);
 
 			imageOnSurface = surface.createImage({ x: 5, y: 40, width: fw, height: fh, src: "img/" + photo.fname }); 
 
-			// backToStartButton = dojo.create("button", {id: "back2Start", innerHTML:"Select Photo"});
-			// on(backToStartButton,"click",createPickPhotoPage);
 			placeOnMain(backToStartButton);
 			
-			
-		domConstruct.place(markupAreaTemplate, surfaceElementDiv);
-        markupAreaDiv = dom.byId("markupAreaDiv");
-		var lbl = domConstruct.create("div", {id: "markUpLabel", innerHTML:"Existing Labels"});
-	//	domConstruct.place(lbl, markupAreaDiv);	
+			domConstruct.place(markupAreaTemplate, divSurfaceElement);
+	        markupAreaDiv = dom.byId("markupAreaDiv");
+			lbl = '<div id="markupLabel">Existing Labels</div>';
+
+			placeOnMarkup(lbl);
 						
 			baseFx.fadeIn({ node: dom.byId("surfaceElement") }).play();
-			
 		
 			paintMarkupScreen(photoID);
-		
 		});
 	},
 	paintMarkupScreen = function(photoID) {
-		var // surfaceElementDiv = dom.byId("surfaceElement"),
+		var // divSurfaceElement = dom.byId("surfaceElement"),
 			// lbl, 
-			muList, myMuItem, markupAreaDiv;
-		
-		// if (dojo.buId('markupAreaDiv') != null) {
-			// domConstruct.empty(markupAreaDiv);
-		// };
-//		markupTemplate = '<div id="markupArea" >  </div>';
-/////		domConstruct.place(markupAreaTemplate, divMainNode);
-		
-//		placeOnMain(markupAreaTemplate); // puts markupAreaDiv on mainDiv
+			muList, myMuItem, markupAreaDiv;	
 	
-		///// lbl = dojo.create("div", {id: "markUpLabel", innerHTML:"Existing Labels"});
-		///// domConstruct.place(lbl, markupAreaDiv);	
-
-	//	markUpButton = domConstruct.create("button", {id: "markUpButton", innerHTML:"Add markup"});
-	//	on(markUpButton,"click",createNewMarkUp);
 		placeOnMarkup(markUpButton);
 //		domConstruct.place(markUpButton, markupAreaDiv);
-
-		muList	= domConstruct.create("ul", {id: "markupList", class: "mulc"},markupAreaDiv);
-	//	domConstruct.place(muList, markupAreaDiv);
-
+//		muList = '<ul id="markupList" class="mulc"> </ul>';
+		muList	= domConstruct.create("ul", {id: "markupList", class: "mulc"},"markupAreaDiv");
+	//	placeOnMarkup(muList);
+		
+	//	var divMarkupList = dom.byId("markupList");
+		
 		markupStore.query("/search/" + photoID).then(function(markups){
 			if (markups === 0) {
 				domConstruct.place('<li class="markupItem">None</li>',muList);								
@@ -279,6 +256,7 @@ function( dom, domConstruct, on, baseFx,
 					var i = surface.createCircle({ cx: oneResult.x, cy: oneResult.y, r: oneResult.size }).setStroke({style: "Dash", width:3, cap:"butt", color:oneResult.color});
 					console.log(i.getUID());
 					myMuItem = '<li class="markupItem" id="' + oneResult.id + '" style= "color: ' + oneResult.color + ';"> ' + oneResult.label + '</li> ';
+			//		domConstruct.place(myMuItem,divMarkupArea);
 					domConstruct.place(myMuItem,muList);
 				});
 				query(".markupItem").on("click", myMarkupObject.onClick);  

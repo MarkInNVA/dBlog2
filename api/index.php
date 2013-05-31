@@ -135,10 +135,12 @@ function findByName($query) {
 }
 
 function getConnection() {
-	$dbhost="igsaaaegaser003.er.usgs.gov";
-	$dbuser="loader";
+//	$dbhost="igsaaaegaser003.er.usgs.gov";
+    $dbhost="localhost";
+		$dbuser="loader";
 	$dbpass="loader";
-	$dbname="opPhotos";
+//    $dbname="opPhotos";
+    $dbname="db1";
 	$dbh = new PDO("pgsql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $dbh;

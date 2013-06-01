@@ -1,46 +1,19 @@
 define([
-	"dojo/dom", "dojo/dom-construct", "dojo/on", "dojo/_base/fx",
+	"dojo/dom", "dojo/dom-construct", "dojo/dom-attr", "dojo/on", "dojo/_base/fx",
     "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/_base/declare", 
-    "dojo/_base/array", "dojo/_base/lang", "dojo/query", "dojox/gfx",
+    "dojo/_base/array", "dojo/_base/lang", "dojo/query", "dojox/gfx", "dojox/gfx/Moveable",
   
-	// "dojo/dom-style",
-	// "dojo/dom-class",
-	
-	// "dojo/dom-geometry",
-	// "dojo/string",
-	
-
-	// "dojo/aspect",
-	// "dojo/keys",
-	// 
-	// 
-	// "dijit/registry",
-	
-//	"dojo/parser",
-
 	"dojo/store/JsonRest",
 	"dojo/parser",
-	// "dojo/_base/window",
-
-	// 
-	// 
-	// 
-	// 
-	// "dojo/store/Memory",
-	// "dojo/data/ObjectStore",
-	// 
 
 	"js/module"
 	], 
-function( dom, domConstruct, on, baseFx,
+
+function( dom, domConstruct, domAttr, on, baseFx,
          DataGrid, Selection, declare,
-         arrayUtil, lang, query, gfx,
+         arrayUtil, lang, query, gfx, mover,
          JsonRest, parser
-	//domStyle, domClass,  domGeometry, string,  
-//			aspect, keys,   registry, // parser, 
-	//		JsonRest, win, 
-    //      Memory, ObjectStore , 
-	//		Form, Button, TextBox
+
 	) {
 	"use strict";
     var // store = null,
@@ -52,15 +25,15 @@ function( dom, domConstruct, on, baseFx,
 		myMarkupObject,
 
 		thumbnailTemplate = '<div>Name : {Name}\n<img class="thumbnail" id="{id}" src="img/{tname}"/><hr></div>',
-//		thumbnailTemplate = '<img class="thumbnail" id="{id}" src="img/{tname}"/>',		
 		mainPhotoTemplate = '<textarea rows="5" cols="55" readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>',
 		
 		markupAreaTemplate = '<div id="markupAreaDiv" >  </div>',
+		markupFormTemplate = '<div id="markupForm" >  </div>',  // ???????
 
 //		markupListTemplate = '<ul id="markupList" class=mulc""> </ul>',
 //		markupItemTemplate = '<li class="markupItem"> {label} </li> '  ,
-		markupFormTemplate = '<div id="markupForm" >  </div>',  // ???????
 //		markupFormInfoTemplate = '<div id="markupForm" >  </div>',  // ???????????
+
 		commentFormTemplate = '<ul id="commentForm"> </ul>',
 		commentItemTemplate = '<li class="commentItem">Received : {recv_date}, From: {from}<br>{comment} </li> '  ,
 
@@ -263,15 +236,11 @@ function( dom, domConstruct, on, baseFx,
 
 
     createNewMarkUp = function() {
-    	var muNode, adjustButton; 
+    	var muNode, adjustButton,i ; 
     	
-		    	
-		if (muNode) {
-			domConstruct.empty(muNode);
-		} else {
-			placeOnMarkup(markupFormTemplate);
-			muNode = dom.byId("markupForm");
-		}
+		placeOnMarkup(markupFormTemplate);
+		muNode = dom.byId("markupForm");
+		domConstruct.empty(muNode);
     	 
 		muNode = dom.byId("markupForm");
 		
@@ -286,11 +255,31 @@ function( dom, domConstruct, on, baseFx,
 		adjustButton = domConstruct.create("button", {id: "adjustButton", innerHTML:"Adjust markup"});
 		placeOnMarkup(adjustButton);
 		on(adjustButton,"click",function(e){
-			alert(e);
+			var oneResult = new Object();
+			oneResult.x = domAttr.get("mTBx", "value");
+			oneResult.y = domAttr.get("mTBy", "value");
+			oneResult.size = domAttr.get("mTBr", "value");
+			oneResult.color = domAttr.get("mTBcolor", "value");
+			if (typeof(i) === 'object') {
+			//	var ii = new mover(i);
+				i.setShape({cx: oneResult.x, cy: oneResult.y})
+				
+			//	i.color = oneResult.color;
+				
+			} else {
+				i = surface.createCircle({ cx: oneResult.x, cy: oneResult.y, r: oneResult.size }).setStroke({style: "Dash", width:3, cap:"butt", color:oneResult.color});
+			};
+			console.log(i);
+//			alert(e);
 		});	
 		
 		
 		var handle = imageOnSurface.connect("onclick",function(e) {
+			  domAttr.set("mTBx", "value", e.layerX);
+			  domAttr.set("mTBy", "value", e.layerY);
+			  domAttr.set("mTBr", "value", 15);
+			  domAttr.set("mTBcolor", "value", "blue");
+
 		//	console.log("X: ",e.layerX,"Y: ",e.layerY);
 		
 			

@@ -30,7 +30,7 @@ function( dom, domConstruct, domAttr, on, baseFx,
 		myMarkupObject,
 
 		thumbnailTemplate = '<div>Name : {Name}\n<img class="thumbnail" id="{id}" src="img/{tname}"/><hr></div>',
-		mainPhotoTemplate = '<textarea rows="5" cols="55" readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>',
+//		mainPhotoTemplate = '<textarea rows="5" cols="55" readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>',
 		
 		markupAreaTemplate = '<div id="markupAreaDiv" >  </div>',
 		markupFormTemplate = '<div id="markupForm" >  </div>',  // ???????
@@ -100,7 +100,7 @@ function( dom, domConstruct, domAttr, on, baseFx,
 //    		putPhotoOnSurface(photoId);
     	});
     	thumbnail.createPickPhotoPage();
-    	util.showMain();
+  //  	util.showMain();
 
     },
 
@@ -151,25 +151,25 @@ function( dom, domConstruct, domAttr, on, baseFx,
 		"use strict";
 		var lw, lh, fw, fh, photoDescription, backToStartButton, handleBackToStart; //, markupAreaDiv;
 		util.clearMain();
-		
-		thumbnailStore.query("/"+photoID).then(function(photo){
-
-			lw = (photo.fx /2) + 10;
-			lh = (photo.fy /2) + 60;
-			fw = photo.fx /2;
-			fh = photo.fy /2;
-		
-			util.placeOnMain('<div id="surfaceElement" style= {width:"' + lw + '"}>  </div>');
-
-			divSurfaceElement = dom.byId("surfaceElement");
-			
-			photoDescription = lang.replace(mainPhotoTemplate, photo);
-			domConstruct.place(photoDescription, divSurfaceElement);			
-			
-		//	surface = gfx.createSurface("surfaceElement", lw , lh);
-			surface = util.createSurface("surfaceElement", lw , lh);
-			
-			imageOnSurface = surface.createImage({ x: 5, y: 40, width: fw, height: fh, src: "img/" + photo.fname }); 
+// 		
+		// thumbnailStore.query("/"+photoID).then(function(photo){
+// 
+			// lw = (photo.fx /2) + 10;
+			// lh = (photo.fy /2) + 60;
+			// fw = photo.fx /2;
+			// fh = photo.fy /2;
+// 		
+			// util.placeOnMain('<div id="surfaceElement" style= {width:"' + lw + '"}>  </div>');
+// 
+			// divSurfaceElement = dom.byId("surfaceElement");
+// 			
+			// photoDescription = lang.replace(mainPhotoTemplate, photo);
+			// domConstruct.place(photoDescription, divSurfaceElement);			
+// 			
+		// //	surface = gfx.createSurface("surfaceElement", lw , lh);
+			// surface = util.createSurface("surfaceElement", lw , lh);
+// 			
+			// imageOnSurface = surface.createImage({ x: 5, y: 40, width: fw, height: fh, src: "img/" + photo.fname }); 
 			
 			backToStartButton = domConstruct.create("button", {id: "back2Start", innerHTML:"Select Photo"});
 		     
@@ -192,7 +192,7 @@ function( dom, domConstruct, domAttr, on, baseFx,
 			baseFx.fadeIn({ node: dom.byId("surfaceElement") }).play();
 		
 			paintMarkupScreen(photoID);
-		});
+		//});
 	},
 	paintMarkupScreen = function(photoID) {
 		var muList, myMuItem, markupAreaDiv;	

@@ -1,26 +1,28 @@
 define([
 	"dojo/dom", "dojo/dom-construct", "dojo/dom-attr", "dojo/on",  "dojo/_base/fx",
-    "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/_base/declare", 
+//    "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/_base/declare", 
     "dojo/_base/array", "dojo/_base/lang", "dojo/query", 
   //  "dojox/gfx", 
     "dojox/gfx/Moveable",
   
 	"dojo/store/JsonRest",
-	"dojo/parser",
+//	"dojo/parser",
 
-	"js/util", "js/thumbnail", "js/module"
+	"js/util", "js/thumbnail", "dojo/topic", "js/module"
 	], 
 
 function( dom, domConstruct, domAttr, on, baseFx,
-         DataGrid, Selection, declare,
+//         DataGrid, Selection, declare,
          arrayUtil, lang, query,  //gfx, 
          mover,
-         JsonRest, parser, util, thumbnail
+         JsonRest, 
+ //        parser, 
+         util, thumbnail, topic
 
 	) {
 	"use strict";
     var // store = null,
-		thumbnailStore,
+	//	thumbnailStore,
 		markupStore,
 		commentStore,
 
@@ -71,9 +73,9 @@ function( dom, domConstruct, domAttr, on, baseFx,
 			}
 		};
 
-		thumbnailStore = new JsonRest({
-			target: "api/index.php/photos"
-		});
+		// thumbnailStore = new JsonRest({
+			// target: "api/index.php/photos"
+		// });
 			
 		markupStore = new JsonRest({
 			target: "api/index.php/markup"	
@@ -89,19 +91,27 @@ function( dom, domConstruct, domAttr, on, baseFx,
 		commentButton = domConstruct.create("button", {id: "commentButton", innerHTML:"Add comment"});
 		on(commentButton,"click",createNewComment);				
 		
-		createPickPhotoPage();  /* show them the photos & let them pick one */
+		util.clearMain();
+		util.clearFooter();
+		
+//		createPickPhotoPage();  /* show them the photos & let them pick one */
+    	topic.subscribe("thumbnail", function(photoId){
+    		console.log("thumbnail subscribe :", photoId);
+//    		putPhotoOnSurface(photoId);
+    	});
+    	thumbnail.createPickPhotoPage();
+    	util.showMain();
 
     },
 
 
         
     createPickPhotoPage = function () {
-    	var photo;
-    	photo = thumbnail.createPickPhotoPage()
+    	
+	//	thumbnail.createPickPhotoPage();
+    	
 		// var phList, myListItem, grid  ;
 // 
-		// util.clearMain();
-		// util.clearFooter();
 // 
 		// util.placeOnMain(domConstruct.create("div", {id: "pl_label", innerHTML:"Select photo"}));
 // 		

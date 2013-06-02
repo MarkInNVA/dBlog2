@@ -1,0 +1,93 @@
+define(
+	[
+	"dojo/dom", "dojo/dom-construct", "dojo/dom-attr", 
+	"dojo/on", 
+	"dojo/_base/fx", "dojox/gfx",
+	],
+	
+	function(dom, domConstruct, domAttr, on, baseFx, gfx) {
+		var surface, divMainNode = dom.byId("main");
+		
+					
+		return {
+			createSurface : function(div, width, height) {
+				surface = gfx.createSurface(div, width , height);	
+				return surface;	
+			},
+			hideMain : function () {
+				domAttr.set("main","opacity",0.0);
+			},			
+			
+			clearMain : function () {  // clear div Main (large center section)
+				// if (imageOnSurface) {
+					// imageOnSurface.destroy();
+					// //	console.log("Destroying imageOnSurface");
+				// }
+				// if (surface) {
+					// surface.destroy();
+				// //	console.log("Destroying surface");
+					// surface = '';
+				// }
+		
+				// if (dom.byId('markupAreaDiv') != null) {
+					// baseFx.fadeOut({
+						// node:dom.byId('markupAreaDiv')
+					// }).play();
+				// }
+		//		console.log("Clearing main");
+				setTimeout(function(){
+					onEnd: domConstruct.empty(divMainNode)
+	    			console.log("Clearing main");
+    			}, 1000);
+					baseFx.fadeOut({ 
+						node: dom.byId(divMainNode),
+						duration:1000,
+					}).play();
+		//		deferred.resolve("async");
+			} ,
+			
+			showMain : function() {
+				baseFx.fadeIn({ 
+					node: dom.byId(divMainNode),
+					duration:1000
+				}).play(); 				
+			},
+		clearFooter : function(){
+			baseFx.fadeOut({ 
+				node: dom.byId("footer"),
+				onEnd: domConstruct.empty("footer")
+			}).play();			
+		},
+		showFooter : function() {
+			baseFx.fadeIn({ 
+				node: dom.byId("footer")
+			}).play(); 			
+		},
+
+	    placeOnMain : function (item) {  // add item to  div Main (large center section)
+			domConstruct.place(item,divMainNode);
+	    } ,
+	    
+	    placeOnMarkup : function (item) {  // add item to  div Main (large center section)
+			var divMarkupArea = dom.byId("markupAreaDiv");
+			domConstruct.place(item,divMarkupArea);
+	    } ,
+	
+	    placeOnFooter : function (item) {  // add item to  div Main (large center section)
+			var divArea = dom.byId("footer");
+			domConstruct.place(item,divArea);
+	    } ,
+		
+		increment: function(){
+			privateValue++;
+		},
+
+		decrement: function(){
+			privateValue--;
+		},
+
+		getValue: function(){
+			return privateValue;
+		}
+	};
+});

@@ -53,6 +53,7 @@
         -moz-border-radius: 4px;
         width: 1250px;
         height: 750px;
+        opacity: 0.0;
       }
       
       /*#photo {
@@ -217,5 +218,5 @@
        border:solid 5px #0f0ff00;	/* doesn't seem to matter  */
        top:45px;	
        height: 740px;	   
-       opacity:0.0;
+       opacity:1.0;
       }

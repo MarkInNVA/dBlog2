@@ -37,7 +37,7 @@ define(
 		//		console.log("Clearing main");
 				setTimeout(function(){
 					onEnd: domConstruct.empty(divMainNode)
-	    			console.log("Clearing main");
+	    //			console.log("Clearing main");
     			}, 1000);
 					baseFx.fadeOut({ 
 						node: dom.byId(divMainNode),

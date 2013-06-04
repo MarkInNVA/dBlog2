@@ -66,8 +66,8 @@ define( [
 			putPhotoOnSurface : function (photoId) {
 			   	"use strict";
 				var lw, lh, fw, fh, photoDescription  , divSurfaceElement, imageOnSurface,
-				mainPhotoTemplate = '<textarea rows="5" cols="55" readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>',		
-				markupAreaTemplate = '<div id="markupAreaDiv" >  </div>';
+				mainPhotoTemplate = '<textarea rows="5" cols="55" readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>';
+				
 				
 				thumbnailStore.query("/"+photoId).then(function(photo){
 				
@@ -75,19 +75,15 @@ define( [
 					lh = (photo.fy /2) + 60;
 					fw = photo.fx /2;
 					fh = photo.fy /2;
-				
-					util.placeOnMain('<div id="surfaceElement" style= {width:"' + lw + '"}>  </div>');
-				
+								
 					photoDescription = lang.replace(mainPhotoTemplate, photo);
 					
-					divSurfaceElement = dom.byId("surfaceElement");
-					
-					domConstruct.place(markupAreaTemplate, divSurfaceElement);					
+					divSurfaceElement = dom.byId("surfaceElement");					
 					
 					domConstruct.place(photoDescription, divSurfaceElement);			
 					
 				//	surface = gfx.createSurface("surfaceElement", lw , lh);
-					surface = util.createSurface("surfaceElement", lw , lh);
+					surface = util.createSurface( lw , lh);
 					
 					imageOnSurface = surface.createImage({ x: 5, y: 40, width: fw, height: fh, src: "img/" + photo.fname }); 
 		//			util.showMain();
@@ -95,7 +91,8 @@ define( [
 			
 			},
 			putShapeOnSurface : function (shape) {
-				var i = surface.createCircle({ cx: shape.x, cy: shape.y, r: shape.size }).setStroke({style: "Dash", width:3, cap:"butt", color:shape.color});
+				var i;
+				i = surface.createCircle({ cx: shape.x, cy: shape.y, r: shape.size }).setStroke({style: "Dash", width:3, cap:"butt", color:shape.color});
 				console.log("Put", i, "on surface");
 			}
 		}

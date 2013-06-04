@@ -21,12 +21,13 @@ function( dom, domConstruct, domAttr, on, baseFx,
 
 		thumbnailTemplate = '<div>Name : {Name}\n<img class="thumbnail" id="{id}" src="img/{tname}"/><hr></div>',
 		
-//		markupAreaTemplate = '<div id="markupAreaDiv" >  </div>',
+		markupAreaTemplate = '<div id="markupAreaDiv" >  </div>',
 		markupFormTemplate = '<div id="markupForm" >  </div>',  // ???????
 
 		commentFormTemplate = '<ul id="commentForm"> </ul>',
 		commentItemTemplate = '<li class="commentItem">Received : {recv_date}, From: {from}<br>{comment} </li> '  ,
 
+		markupListTemplate = '<ul id="markupList" class="mulc"> </ul>',
 		markUpButton,
 		commentButton,
 		
@@ -84,10 +85,10 @@ function( dom, domConstruct, domAttr, on, baseFx,
 				onEnd: {
 					thumbnail.putPhotoOnSurface(photoId); 
 					util.placeOnFooter(backToStartButton);
-//					paintMarkupScreen(photoId);
+    			console.log("in thumbnail subscribe timeout");
+		//			paintMarkupScreen(photoId);
 					util.showMain();
 				}
-    			console.log("in thumbnail subscribe timeout");
 			}, 1000);	
 								
 //			console.log("in doit subsctibe");
@@ -98,18 +99,22 @@ function( dom, domConstruct, domAttr, on, baseFx,
     },
       
 	paintMarkupScreen = function(photoID) {
-		var muList, myMuItem, markupAreaDiv;	
+		var muList, myMuItem, markupAreaDiv; //	, markupAreaTemplate = '<div id="markupAreaDiv" >  </div>'
 		console.log("Start of paintMarkupScreen");
-		muList	= domConstruct.create("ul", {id: "markupList", class: "mulc"},"markupAreaDiv");
 		
-		// util.placeOnMarkup(markUpButton);
+//		util.placeOnMain('<div id="markupAreaDiv" >  </div>');				
+//		util.placeOnSurface(markupAreaTemplate);
+//		util.placeOnMarkup(markupListTemplate);
+//		muList	= domConstruct.create("ul", {id: "markupList", class: "mulc"},"markupAreaDiv");
+		
+//		util.placeOnMarkup(markUpButton);
 // 
-		// markupStore.query("/search/" + photoID).then(function(markups){
-			// if (markups === 0) {
+		markupStore.query("/search/" + photoID).then(function(markups){
+			if (markups === 0) {
 				// domConstruct.place('<li class="markupItem">None</li>',muList);								
-				// console.log("no markups"); 
-			// } else  {
-				// console.log("have " + markups.length + " markups;");
+//				console.log("no markups"); 
+			} else  {
+				console.log("have " + markups.length + " markups;");
 				// arrayUtil.forEach(markups, function(oneResult) {
 // 
 			// //		thumbnail.putShapeOnSurface(oneResult);
@@ -120,10 +125,10 @@ function( dom, domConstruct, domAttr, on, baseFx,
 					// domConstruct.place(myMuItem,muList);
 				// });
 				// query(".markupItem").on("click", myMarkupObject.onClick);  
-			// }
-		// }).then(function(){
-		// //	baseFx.fadeIn({ node: dom.byId("markupAreaDiv") }).play();			
-		// });
+			}
+		}); //.then(function(){
+	//		baseFx.fadeIn({ node: dom.byId("markupAreaDiv") }).play();			
+	//	});
 		console.log("End of paintMarkupScreen");
 	},
 	

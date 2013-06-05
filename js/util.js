@@ -10,20 +10,6 @@ define(
 		
 					
 		return {
-			createSurface : function(div, width, height) {
-				var divSurfaceElement;
-				
-				util.placeOnMain('<div id="surfaceElement" style= {width:"' + lw + '"}>  </div>');
-									
-				divSurfaceElement = dom.byId("surfaceElement");
-				
-//				placeOnSurface('<div id="markupAreaDiv" >  </div>');		
-				
-				surface = gfx.createSurface(divSurfaceElement, width , height);	
-								
-				return surface;	
-			},
-			
 			hideMain : function () {
 				domAttr.set("main","opacity",0.0);
 			},			
@@ -92,7 +78,18 @@ define(
 	    	divSurfaceElement = dom.byId("surfaceElement");
 	    	domConstruct.place(item,divSurfaceElement);
 	    },
-		
+		createSurface : function(width, height) {
+			var divSurfaceElement;
+								
+			divSurfaceElement = dom.byId("surfaceElement");
+			
+//				placeOnSurface('<div id="markupAreaDiv" >  </div>');		
+			
+			surface = gfx.createSurface(divSurfaceElement, width , height);	
+							
+			return surface;	
+		},
+					
 		increment: function(){
 			privateValue++;
 		},

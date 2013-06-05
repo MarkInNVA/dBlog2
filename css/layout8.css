@@ -118,8 +118,9 @@
       #photoGrid {
         position: absolute;
         top:  45px;
-      left: 450px;
-      width: 780px; /* need an extra 20 or so pixels for scrollbar, etc    */
+      left: 25px;
+      height:680px;
+      width: 1200px; /* need an extra 20 or so pixels for scrollbar, etc    */
 
       }
       .field-id {
@@ -130,6 +131,15 @@
     }
     .field-description {
       width: 460px;
+    }
+    .field-tname {
+    	width:355px;
+    }
+    .dgrid-row {
+    	height: 300px;
+    }
+    .dgimg {
+    	width:350px;
     }
       #photoDescription {
       	position: absolute;
@@ -237,8 +247,13 @@
       }
       
 	  #surfaceElement {
-       border:solid 5px #0f0ff00;	/* doesn't seem to matter  */
-       top:45px;	
+	  	top:45px; 
+	  	width:775px;
+	  	height: 740px;
+	  	overflow: auto;
+	  )
+    /*   border:solid 5px #0f0ff00;	*/  /* doesn't seem to matter  */
+    /*   top:45px;	
        height: 740px;	   
        opacity:1.0;
-      }
+      }*/

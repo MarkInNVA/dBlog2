@@ -33,11 +33,11 @@ define( [
 				// util.clearMain();
 				// util.clearFooter();
 		
-				util.placeOnMain(domConstruct.create("div", {id: "pl_label", innerHTML:"Select photo", opacity: 0.0}));				
-				util.placeOnMain(domConstruct.create("div", {id: "pl_label2", innerHTML:"or row"}));
+				util.placeOnMain(domConstruct.create("div", {id: "pl_label", innerHTML:"Select photo to discuss", opacity: 0.0}));				
+//				util.placeOnMain(domConstruct.create("div", {id: "pl_label2", innerHTML:"or row"}));
 				util.placeOnMain(domConstruct.create("div", {id: "photoGrid"}));
-				phList	= domConstruct.create("ul", {id: "photoList"});
-				util.placeOnMain(phList);
+//				phList	= domConstruct.create("ul", {id: "photoList"});
+//				util.placeOnMain(phList);
 		
 				grid = new (declare([DataGrid, Selection]))({
 					store: thumbnailStore, // a Dojo object store - css stuff for column widths, etc
@@ -54,15 +54,15 @@ define( [
 					myPhotoObject.photoId = event.rows[0].id;
 					topic.publish("thumbnail",event.rows[0].id);
 				});
-				
-				thumbnailStore.query().then(function(resultPhotos){
-					arrayUtil.forEach(resultPhotos, function(oneResult) {
-						myListItem = lang.replace(thumbnailTemplate, oneResult);
-						domConstruct.place(myListItem,phList);
-					});
-		
-					query(".thumbnail").on("click", myPhotoObject.onClick);   // the thumbnail class is added via the template above (in forEach)
-				});
+// 				
+				// thumbnailStore.query().then(function(resultPhotos){
+					// arrayUtil.forEach(resultPhotos, function(oneResult) {
+						// myListItem = lang.replace(thumbnailTemplate, oneResult);
+						// domConstruct.place(myListItem,phList);
+					// });
+// 		
+					// query(".thumbnail").on("click", myPhotoObject.onClick);   // the thumbnail class is added via the template above (in forEach)
+				// });
 			},
 			putPhotoOnSurface : function (photoId) {
 			   	"use strict";
@@ -81,24 +81,34 @@ define( [
 					
 					util.placeOnMain('<div id="surfaceElement" >  </div>');
 
-//					surface = util.createSurface( photo.fx + 10, photo.fy + 10);  // with imageOnSurface ... photo.fx, etc works with style overflow auto, not sure about markup though
+//	test2				surface = util.createSurface( photo.fx + 10, photo.fy + 10);  // with imageOnSurface ... photo.fx, etc works with style overflow auto, not sure about markup though
 					surface = util.createSurface( lw , lh);
 					
 					divSurfaceElement = dom.byId("surfaceElement");					
 					
 					domConstruct.place(photoDescription, divSurfaceElement);			
 					
-//					imageOnSurface = surface.createImage({ x: 5, y: 40, width: photo.fx, height: photo.fy, src: "img/" + photo.fname });  // see above ( surface = util... photo.fx...) 
+//	test2				imageOnSurface = surface.createImage({ x: 5, y: 40, width: photo.fx, height: photo.fy, src: "img/" + photo.fname });  // see above ( surface = util... photo.fx...) 
 					imageOnSurface = surface.createImage({ x: 5, y: 40, width: fw, height: fh, src: "img/" + photo.fname }); 
-		//			util.showMain();
-					return(imageOnSurface);
+					return surface; 
 				 });
 			
 			},
+			getSurface : function() {
+				return surface;
+			},
 			putShapeOnSurface : function (shape) {
+				var i, x = shape.x * 2, y = shape.y * 2;
+//				i = surface.createCircle({ cx: shape.x, cy: shape.y, r: shape.size }).setStroke({style: "shape.style"Dash"", width : shape.width, cap: shape.cap, color:shape.color});
+//	test2			i = surface.createCircle({ cx: x , cy: y, r: shape.size }).setStroke({style: "Dash", width:3, cap:"butt", color:shape.color});
+				i = surface.createCircle({ cx: shape.x , cy: shape.y, r: shape.size }).setStroke({style: "Dash", width:3, cap:"butt", color:shape.color});
+		//		console.log("I Put old ", i, "on surface");
+			},
+			putNewShapeOnSurface : function (shape) {
 				var i;
-				i = surface.createCircle({ cx: shape.x, cy: shape.y, r: shape.size }).setStroke({style: "Dash", width:3, cap:"butt", color:shape.color});
-				console.log("Put", i, "on surface");
+				i = surface.createCircle({ cx: shape.x, cy: shape.y, r: shape.size }).setStroke({style: shape.style, width : shape.width, cap: shape.cap, color:shape.color});
+		//		console.log("I Put new ", i, "on surface");
+				return i;
 			}
 		}
 		

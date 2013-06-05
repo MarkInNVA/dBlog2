@@ -3,7 +3,7 @@ define([
     "dojo/_base/array", "dojo/_base/lang", "dojo/query", 
     "dojox/gfx/Moveable",  
 	"dojo/store/JsonRest",
-	"js/util", "js/thumbnail", "dojo/topic", "js/module"
+	"js/util", "js/thumbnail2", "dojo/topic", "js/module"
 	], 
 
 function( dom, domConstruct, domAttr, on, baseFx,
@@ -49,7 +49,7 @@ function( dom, domConstruct, domAttr, on, baseFx,
 					util.showMain();
 			//		util.showFooter();
 				}
-    			console.log("in back to start on timeout");
+    		//	console.log("in back to start on timeout");
 			}, 1000);			    // Do other stuff here that you only want to happen one time
 		}),
 		
@@ -85,65 +85,66 @@ function( dom, domConstruct, domAttr, on, baseFx,
 				onEnd: {
 					thumbnail.putPhotoOnSurface(photoId); 
 					util.placeOnFooter(backToStartButton);
-    			console.log("in thumbnail subscribe timeout");
-		//			paintMarkupScreen(photoId);
+    	//			console.log("in thumbnail subscribe timeout");
+    		//		console.log(imageOnSurface);
+					paintMarkupScreen(photoId);
 					util.showMain();
 				}
 			}, 1000);	
 								
 //			console.log("in doit subsctibe");
 		})
-		console.log("in bottom of doit");
+	//	console.log("in bottom of doit");
 		thumbnail.createPickPhotoPage();	
 		util.showMain();
     },
       
 	paintMarkupScreen = function(photoID) {
 		var muList, myMuItem, markupAreaDiv; //	, markupAreaTemplate = '<div id="markupAreaDiv" >  </div>'
-		console.log("Start of paintMarkupScreen");
+	//	console.log("Start of paintMarkupScreen");
 		
-//		util.placeOnMain('<div id="markupAreaDiv" >  </div>');				
+		util.placeOnMain('<div id="markupAreaDiv" >  </div>');				
 //		util.placeOnSurface(markupAreaTemplate);
 //		util.placeOnMarkup(markupListTemplate);
-//		muList	= domConstruct.create("ul", {id: "markupList", class: "mulc"},"markupAreaDiv");
+		muList	= domConstruct.create("ul", {id: "markupList", class: "mulc"},"markupAreaDiv");
 		
-//		util.placeOnMarkup(markUpButton);
+		util.placeOnMarkup(markUpButton);
 // 
 		markupStore.query("/search/" + photoID).then(function(markups){
 			if (markups === 0) {
-				// domConstruct.place('<li class="markupItem">None</li>',muList);								
-//				console.log("no markups"); 
+				 domConstruct.place('<li class="markupItem">None</li>',muList);								
+	//			console.log("no markups"); 
 			} else  {
-				console.log("have " + markups.length + " markups;");
-				// arrayUtil.forEach(markups, function(oneResult) {
+	//			console.log("have " + markups.length + " markups;");
+				 arrayUtil.forEach(markups, function(oneResult) {
 // 
-			// //		thumbnail.putShapeOnSurface(oneResult);
+					thumbnail.putShapeOnSurface(oneResult);
 // //					var i = surface.createCircle({ cx: oneResult.x, cy: oneResult.y, r: oneResult.size }).setStroke({style: "Dash", width:3, cap:"butt", color:oneResult.color});
 				// //	console.log(i.getUID());
 // 
-					// myMuItem = '<li class="markupItem" id="' + oneResult.id + '" style= "color: ' + oneResult.color + ';"> ' + oneResult.label + '</li> ';
-					// domConstruct.place(myMuItem,muList);
-				// });
-				// query(".markupItem").on("click", myMarkupObject.onClick);  
+					 myMuItem = '<li class="markupItem" id="' + oneResult.id + '" style= "color: ' + oneResult.color + ';"> ' + oneResult.label + '</li> ';
+					 domConstruct.place(myMuItem,muList);
+				 });
+				 query(".markupItem").on("click", myMarkupObject.onClick);  
 			}
 		}); //.then(function(){
-	//		baseFx.fadeIn({ node: dom.byId("markupAreaDiv") }).play();			
+		//	baseFx.fadeIn({ node: dom.byId("markupAreaDiv") }).play();			
 	//	});
-		console.log("End of paintMarkupScreen");
+//		console.log("End of paintMarkupScreen");
 	},
 	
 
 
     createNewMarkUp = function() {
-    	var muNode, adjustButton,i, oneResult = new Object(); ; 
+    	var muNode, adjustButton, i, oneResult = new Object(); ; 
     	
-		placeOnMarkup(markupFormTemplate);
+		util.placeOnMarkup(markupFormTemplate);
 		muNode = dom.byId("markupForm");
 		domConstruct.empty(muNode);
     	 
 		muNode = dom.byId("markupForm");
 		
-		placeOnMarkup(domConstruct.create("div", {id: "markupFormLabel", innerHTML:"Markup Info"}));	
+		util.placeOnMarkup(domConstruct.create("div", {id: "markupFormLabel", innerHTML:"Markup Info"}));	
 
 		domConstruct.place('<div> X &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <input type="text" id="mTBx"  /><br> </div>',muNode);
 		domConstruct.place('<div> Y &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <input type="text" id="mTBy"  /><br> </div>',muNode);
@@ -152,10 +153,9 @@ function( dom, domConstruct, domAttr, on, baseFx,
 		domConstruct.place('<div> Color &nbsp;&nbsp;&nbsp;: <input type="text" id="mTBcolor"  /><br> </div>',muNode);
 		
 		adjustButton = domConstruct.create("button", {id: "adjustButton", innerHTML:"Adjust markup"});
-		placeOnMarkup(adjustButton);
+		util.placeOnMarkup(adjustButton);
 		
 		on(adjustButton,"click",function(e){
-			
 			oneResult.x = domAttr.get("mTBx", "value");
 			oneResult.y = domAttr.get("mTBy", "value");
 			oneResult.size = domAttr.get("mTBr", "value");
@@ -168,15 +168,24 @@ function( dom, domConstruct, domAttr, on, baseFx,
 //			alert(e);
 		});	
 		
-		
+		imageOnSurface = thumbnail.getSurface();
 		var handle = imageOnSurface.connect("onclick",function(e) {
 			  domAttr.set("mTBx", "value", e.layerX);
 			  domAttr.set("mTBy", "value", e.layerY);
 			  domAttr.set("mTBr", "value", 15);
 			  domAttr.set("mTBcolor", "value", "blue");
+			var o = {};
+			o.x = e.layerX;
+			o.y = e.layerY;
+			o.size  = 15;
+			o.color = "blue";
+			o.style = "Dash";
+			o.width = 3; 
+			o.cap = "butt";
 
-			i = surface.createCircle({ cx: e.layerX, cy: e.layerY, r: 15 }).setStroke({style: "Dash", width:3, cap:"butt", color: "blue"});
-		//	console.log("X: ",e.layerX,"Y: ",e.layerY);
+			i = thumbnail.putNewShapeOnSurface(o);
+//			i = thumbnail.putShapeOnSurface({ cx: e.layerX, cy: e.layerY, r: 15, style: "Dash", width:3, cap:"butt", color: "blue"});
+//			console.log("X: ",e.layerX,"Y: ",e.layerY);
 		
 			
 		
@@ -200,7 +209,7 @@ function( dom, domConstruct, domAttr, on, baseFx,
    },
 
     createNewComment = function() {
-		console.log("new comment,  Photo : " + myPhotoObject.photoId);
+//		console.log("new comment,  Photo : " + myPhotoObject.photoId);
 	},
 
 	clickMarkUpItem = function(id) {
@@ -212,17 +221,17 @@ function( dom, domConstruct, domAttr, on, baseFx,
 			domConstruct.empty(muNode);
 		} else {
 //			console.log("do not have muNode, creating one");
-			placeOnMarkup(markupFormTemplate);
+			util.placeOnMarkup(markupFormTemplate);
 			muNode = dom.byId("markupForm");
 		}
 
-		placeOnMarkup(commentButton);
-
+		util.placeOnMarkup(commentButton);
+		console.log("Doing markupStore query /",id);
 		markupStore.query("/" + id).then(function(markup){
 
-			placeOnMarkup(domConstruct.create("div", {id: "markupFormLabel", innerHTML:"Markup Info"}));	
+			util.placeOnMarkup(domConstruct.create("div", {id: "markupFormLabel", innerHTML:"Markup Info"}));	
 
-			placeOnMarkup(domConstruct.create("div", {id: "commentLabel", innerHTML:"Comments"}));	
+			util.placeOnMarkup(domConstruct.create("div", {id: "commentLabel", innerHTML:"Comments"}));	
 
 			domConstruct.place('<div> X: <input type="text" id="mTBx" value="' + markup.x + '" /><br> </div>',muNode);
 			domConstruct.place('<div> Y: <input type="text" id="mTBy" value="' + markup.y + '" /><br> </div>',muNode);
@@ -236,7 +245,7 @@ function( dom, domConstruct, domAttr, on, baseFx,
 				domConstruct.empty(commNode);
 			} else {
 //				console.log("do not have commNode, creating one");
-				placeOnMarkup(commentFormTemplate);
+				util.placeOnMarkup(commentFormTemplate);
 //				domConstruct.place(commentFormTemplate, divMainNode);
 				commNode = dom.byId("commentForm");
 			}

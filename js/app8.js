@@ -18,6 +18,7 @@ function( dom, domConstruct, domAttr, on, baseFx,
 		commentStore,
 
 		myMarkupObject,
+		currentPhotoId,
 
 		thumbnailTemplate = '<div>Name : {Name}\n<img class="thumbnail" id="{id}" src="img/{tname}"/><hr></div>',
 		
@@ -79,7 +80,7 @@ function( dom, domConstruct, domAttr, on, baseFx,
 		on(commentButton,"click",createNewComment);				
 		
 		topic.subscribe("thumbnail", function(photoId){
-
+			currentPhotoId = photoId;
 			util.clearMain();//.then(function(){
 			setTimeout(function(){
 				onEnd: {
@@ -136,7 +137,7 @@ function( dom, domConstruct, domAttr, on, baseFx,
 
 
     createNewMarkUp = function() {
-    	var muNode, adjustButton, i, oneResult = new Object(); ; 
+    	var muNode, i, oneResult = new Object(); // adjustButton,  
     	
 		util.placeOnMarkup(markupFormTemplate);
 		muNode = dom.byId("markupForm");
@@ -152,8 +153,9 @@ function( dom, domConstruct, domAttr, on, baseFx,
 		domConstruct.place('<div> Label &nbsp;&nbsp;&nbsp;: <input type="text" id="mTBlbl"  /><br> </div>',muNode);
 		domConstruct.place('<div> Color &nbsp;&nbsp;&nbsp;: <input type="text" id="mTBcolor"  /><br> </div>',muNode);
 		
-		adjustButton = domConstruct.create("button", {id: "adjustButton", innerHTML:"Adjust markup"});
-		util.placeOnMarkup(adjustButton);
+//		adjustButton = domConstruct.create("button", {id: "adjustButton", innerHTML:"Adjust markup"});
+		util.placeOnMarkup(domConstruct.create("button", {id: "adjustButton", innerHTML:"Adjust", disabled:true}));
+		util.placeOnMarkup(domConstruct.create("button", {id: "saveMUButton", innerHTML:"Save", disabled:true}));
 		
 		on(adjustButton,"click",function(e){
 			oneResult.x = domAttr.get("mTBx", "value");
@@ -161,13 +163,22 @@ function( dom, domConstruct, domAttr, on, baseFx,
 			oneResult.size = domAttr.get("mTBr", "value");
 			oneResult.color = domAttr.get("mTBcolor", "value");
 			i.setShape({cx: oneResult.x, cy: oneResult.y, r: oneResult.size})
-			if (typeof(i) === 'object') {
-
-			};
-			console.log(i);
+			domAttr.set("saveMUButton", "disabled", false);
+			// if (typeof(i) === 'object') {
+			// };
+			// console.log(i);
 //			alert(e);
 		});	
-		
+		on(saveMUButton,"click",function(e){
+			markupStore.put({
+				fk_photos: 	currentPhotoId,
+						x: 	domAttr.get("mTBx", "value"),
+						y: domAttr.get("mTBy", "value"),
+					 size: domAttr.get("mTBr", "value"),
+					label: domAttr.get("mTBlbl", "value"),
+					color: domAttr.get("mTBcolor", "value")
+			});
+		});	
 		imageOnSurface = thumbnail.getSurface();
 		var handle = imageOnSurface.connect("onclick",function(e) {
 			  domAttr.set("mTBx", "value", e.layerX);
@@ -184,20 +195,14 @@ function( dom, domConstruct, domAttr, on, baseFx,
 			o.cap = "butt";
 
 			i = thumbnail.putNewShapeOnSurface(o);
+			domAttr.set("adjustButton", "disabled", false);
+			domAttr.set("saveMUButton", "disabled", false);
 //			i = thumbnail.putShapeOnSurface({ cx: e.layerX, cy: e.layerY, r: 15, style: "Dash", width:3, cap:"butt", color: "blue"});
 //			console.log("X: ",e.layerX,"Y: ",e.layerY);
 		
 			
 		
 		// --------   below works for saving (put) clicked spot to db
-			// markupStore.put({
-				// fk_photos: myPhotoObject.photoId,
-				// x: e.layerX,
-				// y: e.layerY,
-				// size: 15,
-				// label: 'from markupStore.post()',
-				// color: 'black'
-			// });
 			// console.log("handle: ", handle);
 		 	imageOnSurface.disconnect(handle);
 			// console.log("handle: ", handle);

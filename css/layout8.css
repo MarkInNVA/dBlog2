@@ -208,10 +208,15 @@
       #adjustButton {
       	position: absolute;
       	top:  185px;
-    	left: 235px;      	
-      	
+/*    	left: 235px;      	*/
+    	left: 185px;      	      	
       }
-      
+      #saveMUButton {
+      	position: absolute;
+      	top:  185px;
+    	left: 250px;      	      	
+      }
+            
       #commentButton{
       	position: absolute;
       	top:  235px;

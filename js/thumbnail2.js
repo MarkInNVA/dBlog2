@@ -1,14 +1,14 @@
 define( [
-	"dojo/dom", "dojo/dom-construct","dojo/dom-style", "dojo/on", "dojox/gfx", "js/util",
+	"dojo/dom", "dojo/dom-construct","dojo/dom-style", "dojo/on", "dojox/gfx", "dojox/gfx/fx", "js/util",
 	"dgrid/OnDemandGrid", "dgrid/Selection", "dojo/_base/declare", 
 	"dojo/_base/array", "dojo/store/JsonRest", "dojo/_base/lang",
-	"dojo/query", "dojo/topic"
+	"dojo/query", "dojo/topic", "dojo/Deferred"
 	],
 	
-	function(dom, domConstruct, domStyle, on, gfx, util, 
+	function(dom, domConstruct, domStyle, on, gfx, gfxFx, util, 
 			 DataGrid, Selection, declare, 
 			 arrayUtil, JsonRest, lang,
-			 query, topic) {
+			 query, topic, Deferred) {
 		"use strict";
 		
 		var surface, divMainNode = dom.byId("main"); //, myPhotoObject = new Object();
@@ -67,8 +67,18 @@ define( [
 			putPhotoOnSurface : function (photoId) {
 			   	"use strict";
 				var lw, lh, fw, fh, photoDescription  , divSurfaceElement, imageOnSurface,
-				mainPhotoTemplate = '<textarea rows="5" cols="55" readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>';
+				mainPhotoTemplate = '<textarea rows="5" cols="55" readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>',
+				deferred = new Deferred(),
 				
+				waitForIt = function (){
+					surface.whenLoaded(function(e){
+						console.log("Surface loaded (tn ):",e);
+						deferred.resolve();						
+					})				
+					return deferred.promise;	
+				};
+				
+				console.log("At start of putPhotoOnSurface (tn ):");			
 				
 				thumbnailStore.query("/"+photoId).then(function(photo){
 				
@@ -82,17 +92,20 @@ define( [
 					util.placeOnMain('<div id="surfaceElement" >  </div>');
 
 //	test2				surface = util.createSurface( photo.fx + 10, photo.fy + 10);  // with imageOnSurface ... photo.fx, etc works with style overflow auto, not sure about markup though
-					surface = util.createSurface( lw , lh);
-					
-					divSurfaceElement = dom.byId("surfaceElement");					
-					
-					domConstruct.place(photoDescription, divSurfaceElement);			
-					
-//	test2				imageOnSurface = surface.createImage({ x: 5, y: 40, width: photo.fx, height: photo.fy, src: "img/" + photo.fname });  // see above ( surface = util... photo.fx...) 
-					imageOnSurface = surface.createImage({ x: 5, y: 40, width: fw, height: fh, src: "img/" + photo.fname }); 
-					return surface; 
-				 });
 			
+					console.log("Right before createSurface (tn ):");
+
+					surface = util.createSurface( lw , lh);
+					waitForIt().then (function() {
+						console.log("start of waitforit (tn ):");
+						divSurfaceElement = dom.byId("surfaceElement");					
+						domConstruct.place(photoDescription, divSurfaceElement);			
+						
+						imageOnSurface = surface.createImage({ x: 5, y: 40, width: fw, height: fh, src: "img/" + photo.fname }); 
+						return surface; 						
+					});
+				 });
+				console.log("At end of putPhotoOnSurface (tn ):");			
 			},
 			getSurface : function() {
 				return surface;
@@ -109,6 +122,35 @@ define( [
 				i = surface.createCircle({ cx: shape.x, cy: shape.y, r: shape.size }).setStroke({style: shape.style, width : shape.width, cap: shape.cap, color:shape.color});
 		//		console.log("I Put new ", i, "on surface");
 				return i;
+			}
+			,
+			putNewShapeOnSurfaceTemp : function (shape) {
+				var i;
+				i = surface.createEllipse({ 
+						cx: shape.x, 
+						cy: shape.y, 
+						rx: shape.sizex, 
+						ry: shape.sizey 
+					}).setStroke({
+						style: shape.style, 
+						width : shape.width, 
+						cap: shape.cap, 
+						color:shape.color});
+		//		console.log("I Put new ", i, "on surface");
+				return i;
+			},
+			rotate : function(i) {
+//				i.applyTransform(gfx.matrix.skewYAt(2, i.shape.cx, i.shape.cy));
+				var animation = new gfxFx.animateTransform({
+					duration:5000,
+					shape: i,
+					transform: [{
+						name:  "rotateAt",
+						start: [0, 240, 240],
+						end:   [360, 240, 240]
+					}]
+				})
+				animation.play();
 			}
 		}
 		

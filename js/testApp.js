@@ -36,6 +36,13 @@ define([
 			//	startLoading(registry.byId("tabs").domNode);
 			});
 		},
+		myTest = function() {
+			var handles = [];
+				handles.push(domConstruct.create("button", {id: "adjustButton", innerHTML:"Adjust", disabled:true}));
+				handles.push(domConstruct.create("button", {id: "saveMUButton", innerHTML:"Save", disabled:true}));
+				handles.push(domConstruct.create("button", {id: "rotateButton", innerHTML:"Rotate", disabled:true}));
+				console.dir(handles);  
+		},
 		endLoading = function() {
 			// summary:
 			// Indicate not-loading state in the UI
@@ -67,8 +74,7 @@ define([
 			// create and setup the UI with layout and widgets
 			
 			thumbnailStore = new JsonRest({
-				target: "api/index.php/photos"
-				       
+				target: "api/photos"
 			});
 			
 			thumbnailStore.query().then(function(photo){
@@ -160,10 +166,10 @@ define([
 		};
 		return {
 			init: function() {
-	//			startLoading();
+			//	startLoading();
 				// register callback for when dependencies have loaded
-//				startup();
-				return 0;
+			//	startup();
+			myTest();
 			}
 		};
 });

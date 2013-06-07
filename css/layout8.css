@@ -216,7 +216,11 @@
       	top:  185px;
     	left: 250px;      	      	
       }
-            
+      #rotateButton{
+      	position: absolute;
+      	top:  185px;
+    	left: 350px;      	      	      	
+      }      
       #commentButton{
       	position: absolute;
       	top:  235px;

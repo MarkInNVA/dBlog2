@@ -42,16 +42,14 @@ function( dom, domConstruct, domAttr, on, baseFx,
 
 
 		handleBackToStart = on(backToStartButton, "click", function(evt){
-//			util.clearFooter();
 			util.clearMain();
 			setTimeout(function(){
 				onEnd: {
 					thumbnail.createPickPhotoPage();	
 					util.showMain();
-			//		util.showFooter();
 				}
     		//	console.log("in back to start on timeout");
-			}, 1000);			    // Do other stuff here that you only want to happen one time
+			}, 1000);
 		}),
 		
     startup = function() {
@@ -84,7 +82,9 @@ function( dom, domConstruct, domAttr, on, baseFx,
 			util.clearMain();//.then(function(){
 			setTimeout(function(){
 				onEnd: {
+					console.log("Just before putPhotoOnSurface (app)")
 					thumbnail.putPhotoOnSurface(photoId); 
+					console.log("Just after putPhotoOnSurface  (app)" )
 					util.placeOnFooter(backToStartButton);
     	//			console.log("in thumbnail subscribe timeout");
     		//		console.log(imageOnSurface);
@@ -137,8 +137,8 @@ function( dom, domConstruct, domAttr, on, baseFx,
 
 
     createNewMarkUp = function() {
-    	var muNode, i, oneResult = new Object(); // adjustButton,  
-    	
+    	var muNode, i, oneResult = {}; // adjustButton,  
+    	oneResult = {};
 		util.placeOnMarkup(markupFormTemplate);
 		muNode = dom.byId("markupForm");
 		domConstruct.empty(muNode);
@@ -149,52 +149,67 @@ function( dom, domConstruct, domAttr, on, baseFx,
 
 		domConstruct.place('<div> X &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <input type="text" id="mTBx"  /><br> </div>',muNode);
 		domConstruct.place('<div> Y &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <input type="text" id="mTBy"  /><br> </div>',muNode);
-		domConstruct.place('<div> Radius : <input type="text" id="mTBr"  /><br> </div>',muNode);
+		domConstruct.place('<div> Radius X: <input type="text" id="mTBrx"  /><br> </div>',muNode);   //Temp
+		domConstruct.place('<div> Radius Y: <input type="text" id="mTBry"  /><br> </div>',muNode);   //Temp
+// orig		domConstruct.place('<div> Radius : <input type="text" id="mTBr"  /><br> </div>',muNode);   
 		domConstruct.place('<div> Label &nbsp;&nbsp;&nbsp;: <input type="text" id="mTBlbl"  /><br> </div>',muNode);
 		domConstruct.place('<div> Color &nbsp;&nbsp;&nbsp;: <input type="text" id="mTBcolor"  /><br> </div>',muNode);
 		
 //		adjustButton = domConstruct.create("button", {id: "adjustButton", innerHTML:"Adjust markup"});
 		util.placeOnMarkup(domConstruct.create("button", {id: "adjustButton", innerHTML:"Adjust", disabled:true}));
 		util.placeOnMarkup(domConstruct.create("button", {id: "saveMUButton", innerHTML:"Save", disabled:true}));
+		util.placeOnMarkup(domConstruct.create("button", {id: "rotateButton", innerHTML:"Rotate", disabled:true}));   // temp
 		
 		on(adjustButton,"click",function(e){
+			console.log("Adjusting");
 			oneResult.x = domAttr.get("mTBx", "value");
 			oneResult.y = domAttr.get("mTBy", "value");
-			oneResult.size = domAttr.get("mTBr", "value");
+// orig			oneResult.size = domAttr.get("mTBr", "value");
+			oneResult.sizex = domAttr.get("mTBrx", "value");   // Temp
+			oneResult.sizey = domAttr.get("mTBry", "value");   // Temp
 			oneResult.color = domAttr.get("mTBcolor", "value");
-			i.setShape({cx: oneResult.x, cy: oneResult.y, r: oneResult.size})
+//			i.setShape({cx: oneResult.x, cy: oneResult.y, r: oneResult.size})
+			i.setShape({cx: oneResult.x, cy: oneResult.y, rx: oneResult.sizex, ry: oneResult.sizey})
 			domAttr.set("saveMUButton", "disabled", false);
+			domAttr.set("rotateButton", "disabled", false);  // temp
 			// if (typeof(i) === 'object') {
 			// };
 			// console.log(i);
 //			alert(e);
 		});	
+		on(rotateButton,"click", function(e){
+			thumbnail.rotate(i);
+		});
 		on(saveMUButton,"click",function(e){
-			markupStore.put({
-				fk_photos: 	currentPhotoId,
-						x: 	domAttr.get("mTBx", "value"),
-						y: domAttr.get("mTBy", "value"),
-					 size: domAttr.get("mTBr", "value"),
-					label: domAttr.get("mTBlbl", "value"),
-					color: domAttr.get("mTBcolor", "value")
-			});
+			// markupStore.put({
+				// fk_photos: 	currentPhotoId,
+						// x: 	domAttr.get("mTBx", "value"),
+						// y: domAttr.get("mTBy", "value"),
+					 // size: domAttr.get("mTBr", "value"),
+					// label: domAttr.get("mTBlbl", "value"),
+					// color: domAttr.get("mTBcolor", "value")
+			// });
 		});	
 		imageOnSurface = thumbnail.getSurface();
 		var handle = imageOnSurface.connect("onclick",function(e) {
 			  domAttr.set("mTBx", "value", e.layerX);
 			  domAttr.set("mTBy", "value", e.layerY);
-			  domAttr.set("mTBr", "value", 15);
+// orig			  domAttr.set("mTBr", "value", 15);
+			  domAttr.set("mTBrx", "value", 15);  // Temp
+			  domAttr.set("mTBry", "value", 15);  // Temp
 			  domAttr.set("mTBcolor", "value", "blue");
 			var o = {};
 			o.x = e.layerX;
 			o.y = e.layerY;
-			o.size  = 15;
+			o.sizex  = 15;
+			o.sizey  = 15;
 			o.color = "blue";
 			o.style = "Dash";
 			o.width = 3; 
 			o.cap = "butt";
 
-			i = thumbnail.putNewShapeOnSurface(o);
+			i = thumbnail.putNewShapeOnSurfaceTemp(o);
+// orig			i = thumbnail.putNewShapeOnSurface(o);
 			domAttr.set("adjustButton", "disabled", false);
 			domAttr.set("saveMUButton", "disabled", false);
 //			i = thumbnail.putShapeOnSurface({ cx: e.layerX, cy: e.layerY, r: 15, style: "Dash", width:3, cap:"butt", color: "blue"});

@@ -86,7 +86,9 @@ define(
 //				placeOnSurface('<div id="markupAreaDiv" >  </div>');		
 			
 			surface = gfx.createSurface(divSurfaceElement, width , height);	
-							
+			// surface.whenLoaded(function(e){
+				// console.log("surface loaded (util)");
+			// })				
 			return surface;	
 		},
 					

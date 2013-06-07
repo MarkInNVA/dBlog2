@@ -107,7 +107,7 @@ function( dom, domConstruct, domAttr, on, baseFx,
 		util.placeOnMain('<div id="markupAreaDiv" >  </div>');				
 //		util.placeOnSurface(markupAreaTemplate);
 //		util.placeOnMarkup(markupListTemplate);
-		muList	= domConstruct.create("ul", {id: "markupList", class: "mulc"},"markupAreaDiv");
+		muList	= domConstruct.create("ul", {id: "markupList", className: "mulc"},"markupAreaDiv");
 		
 		util.placeOnMarkup(markUpButton);
 // 

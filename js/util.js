@@ -2,7 +2,7 @@ define(
 	[
 	"dojo/dom", "dojo/dom-construct", "dojo/dom-attr", 
 	"dojo/on", 
-	"dojo/_base/fx", "dojox/gfx",
+	"dojo/_base/fx", "dojox/gfx"
 	],
 	
 	function(dom, domConstruct, domAttr, on, baseFx, gfx) {

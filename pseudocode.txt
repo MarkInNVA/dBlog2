@@ -1,0 +1,16 @@
+/**
+ * @author 
+ */
+
+
+show thumbnails   
+pick a thumbnail
+
+	show photo
+	show markups
+
+		create new markup
+
+		pick a markup - show comments
+
+			create new comment

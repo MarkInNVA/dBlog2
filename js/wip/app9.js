@@ -76,7 +76,7 @@ define([
                             thumbnail.putPhotoOnSurface(photoId);
                             //				console.log("Just after putPhotoOnSurface  (app)" )
 
-                            util.placeOnFooter(backToStartButton);
+                            util.placeOnMain(backToStartButton);
 
                             paintMarkupScreen(photoId);
                             util.showMain();
@@ -95,15 +95,14 @@ define([
                     //	console.log("Start of paintMarkupScreen");
 
                     util.placeOnMain('<div id="markupAreaDiv" >  </div>');
-                //		util.placeOnSurface(markupAreaTemplate);
-                //		util.placeOnMarkup(markupListTemplate);
+
                 muList = domConstruct.create("ul", {
                     id: "markupList",
                     className: "mulc"
                 }, "markupAreaDiv");
 
                 util.placeOnMarkup(markUpButton);
-                // 
+
                 markupStore.query("/search/" + photoID).then(function (markups) {
                     if (markups === 0) {
                         domConstruct.place('<li class="markupItem">None</li>', muList);
@@ -126,7 +125,6 @@ define([
                 //	});
                 //		console.log("End of paintMarkupScreen");
             },
-
 
 
             createNewMarkUp = function () {

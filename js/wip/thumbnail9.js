@@ -56,7 +56,7 @@ define([
             
             placePhoto: function (photo) {
                 var photoDescription, divSurfaceElement, fw, fh, imageOnSurface, subscribeHandle,
-                    mainPhotoTemplate = '<textarea rows="5" cols="55" readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>';
+                    mainPhotoTemplate = '<textarea rows="5" cols="57" readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>';
 
                 console.log("placePhoto :", photo);
 
@@ -70,7 +70,7 @@ define([
                     console.log("subscribe - haveSurface (tn ):");
 
                     //	test2				surface = util.createSurface( photo.fx + 10, photo.fy + 10);  // with imageOnSurface ... photo.fx, etc works with style overflow auto, not sure about markup though
-                    imageOnSurface = surface.createImage({ x: 0, y: 0, width: (photo.fx / 2), height: (photo.fy / 2), src: "img/" + photo.fname });
+                    imageOnSurface = surface.createImage({ x: 10, y: 10, width: (photo.fx / 2), height: (photo.fy / 2), src: "img/" + photo.fname });
                     subscribeHandle.remove();
                 });
                 fw = (photo.fx / 2) + 25;

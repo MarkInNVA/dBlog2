@@ -62,11 +62,12 @@
         width: 1250px;
         height: 850px;  	  	
         opacity: 1.0;  	  
+        background-color:#ecefe4;color:#3f3f3f;
         }
   	  
       #main {
         position: absolute;
-        top:  94px;
+        top:  58px; /* 94px; */
         left: 0px;
         margin: 0px;
         border:solid 2px #224a54;
@@ -247,21 +248,22 @@
       }
       
       #back2Start{
-        text-align=center;
-        
-        margin:8px;
+      	position: absolute;
+      	top:  10px;
+    	left: 780px;
+        /*text-align=center;*/        
+        margin:0px;
 
 /*        width:100% */
 /*      	text-align: center;  */
       }
-      
-	  #surfaceElement {
+      #surfaceElement {
 	  	top:45px; 
 	  	width:775px;
 	  	height: 740px;
 	  	overflow: auto;
 	  )
-    /*   border:solid 5px #0f0ff00;	*/  /* doesn't seem to matter  */
+       border:solid 5px #0f0ff00;	  /* doesn't seem to matter  */
     /*   top:45px;	
        height: 740px;	   
        opacity:1.0;

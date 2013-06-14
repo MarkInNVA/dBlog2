@@ -30,16 +30,23 @@ define(
 					duration:1000
 				}).play(); 				
 			},
-			clearFooter : function(){
+			// clearFooter : function(){
+				// baseFx.fadeOut({ 
+					// node: dom.byId("footer"),
+					// onEnd: domConstruct.empty("footer")
+				// }).play();			
+			// },
+			// showFooter : function() {
+				// baseFx.fadeIn({ 
+					// node: dom.byId("footer")
+				// }).play(); 			
+			// },
+			clearMarkup : function(){
 				baseFx.fadeOut({ 
-					node: dom.byId("footer"),
-					onEnd: domConstruct.empty("footer")
+					node: dom.byId("markupAreaDiv"),
+					duration: 2500,
+					onEnd: domConstruct.empty("markupAreaDiv")
 				}).play();			
-			},
-			showFooter : function() {
-				baseFx.fadeIn({ 
-					node: dom.byId("footer")
-				}).play(); 			
 			},
 	
 		    placeOnMain : function (item) {  // add item to  div Main (large center section)

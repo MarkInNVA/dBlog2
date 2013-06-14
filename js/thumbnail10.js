@@ -56,7 +56,7 @@ define([
             
             placePhoto: function (photo) {
                 var photoDescription, divSurfaceElement, fw, fh, imageOnSurface, subscribeHandle,
-                    mainPhotoTemplate = '<textarea rows="5" cols="57" readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>';
+                    mainPhotoTemplate = '<textarea rows="5" cols="55" readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>';
 
 //                console.log("placePhoto :", photo);
 
@@ -102,32 +102,15 @@ define([
             },
             putNewShapeOnSurface: function (shape) {
                 var i;
-                i = surface.createCircle({
-                    cx: shape.x,
-                    cy: shape.y,
-                    r: shape.size
-                }).setStroke({
-                    style: shape.style,
-                    width: shape.width,
-                    cap: shape.cap,
-                    color: shape.color
-                });
+                i = surface.createCircle({ cx: shape.x, cy: shape.y, r: shape.size
+                }).setStroke({ style: shape.style, width: shape.width, cap: shape.cap, color: shape.color });
   //              console.log("I Put new ", i, "on surface");
                 return i;
             },
             putNewShapeOnSurfaceTemp: function (shape) {
                 var i;
-                i = surface.createEllipse({
-                    cx: shape.x,
-                    cy: shape.y,
-                    rx: shape.sizex,
-                    ry: shape.sizey
-                }).setStroke({
-                    style: shape.style,
-                    width: shape.width,
-                    cap: shape.cap,
-                    color: shape.color
-                });
+                i = surface.createEllipse({ cx: shape.x, cy: shape.y, rx: shape.sizex, ry: shape.sizey
+                }).setStroke({ style: shape.style, width: shape.width, cap: shape.cap, color: shape.color });
                 //		console.log("I Put new ", i, "on surface");
                 return i;
             },

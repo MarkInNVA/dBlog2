@@ -1,18 +1,16 @@
 define([
-    "dojo/dom", "dojo/dom-construct", "dojo/dom-attr", "dojo/on", // "dojo/_base/fx",
-    "dojo/_base/array", "dojo/_base/lang", "dojo/query",
-   // "dojox/gfx/Moveable",  
-    "dojo/store/JsonRest",
-     "js/util10", "js/thumbnail10", "js/markup10", "dojo/topic", "js/module"
+    "dojo/dom", "dojo/dom-construct", "dojo/on", 
+    "dojo/_base/array", "dojo/_base/lang", "dojo/query", 
+    "dojo/store/JsonRest", "dojo/topic",
+     "js/util10", "js/thumbnail10", "js/markup10",  "js/module"
 ],
-    function (dom, domConstruct, domAttr, on, // baseFx,
-        arrayUtil, lang, query, //gfx, 
-        //     mover,
-        JsonRest,
-        util, thumbnail, markup, topic
-    ) {
+    function (dom, domConstruct,  on, 
+        arrayUtil, lang, query, 
+        JsonRest, topic,
+        util, thumbnail, markup  ) 
+    {
         "use strict";
-        var commentStore, myMarkupObject, currentPhotoId,
+        var  currentPhotoId, 
 
             //        thumbnailTemplate = '<div>Name : {Name}\n<img class="thumbnail" id="{id}" src="img/{tname}"/><hr></div>',
             //      markupAreaTemplate = '<div id="markupAreaDiv" >  </div>',
@@ -21,11 +19,6 @@ define([
             //      surface,
             //        divSurfaceElement,
             
-            markupFormTemplate = '<div id="markupForm" >  </div>', // ???????
-            commentFormTemplate = '<ul id="commentForm"> </ul>',
-            commentItemTemplate = '<li class="commentItem">Received : {recv_date}, From: {from}<br>{comment} </li> ',
-
-            commentButton,  imageOnSurface,
             
             backToStartButton = domConstruct.create("button", { id: "back2Start", innerHTML: "Select Photo" }),
 
@@ -42,16 +35,12 @@ define([
 
             startup = function () {
                 // create objects, stores, a couple buttons, then go to createPickPhotoPage
-
-
-                commentStore = new JsonRest({
-                    target: "api/index.php/comment"
+				var subscribeHandle = topic.subscribe("paintMarkupScreen", function (photoId) {
+               		console.log("subscribe : paintMarkupScreen fired : app.js");
+                //	subscribeHandle.remove(); 
+                	markup.createMarkupPage(photoId);	
                 });
-
-
-                commentButton = domConstruct.create("button", { id: "commentButton", innerHTML: "Add comment" });
-                on(commentButton, "click", createNewComment);
-
+                
                 topic.subscribe("thumbnail", function (photoId) {
                     currentPhotoId = photoId;
                     
@@ -64,8 +53,10 @@ define([
                             //				console.log("Just after putPhotoOnSurface  (app)" )
 
                             util.placeOnMain(backToStartButton);
+                         console.log("Going to publish paintMarkupScreen - initial, from app");
+                            topic.publish("paintMarkupScreen", photoId);
 
-                            paintMarkupScreen(photoId);
+                       //     paintMarkupScreen(photoId);
                             util.showMain();
                         }
                     }, 1000);
@@ -79,11 +70,6 @@ define([
 
             paintMarkupScreen = function (photoID) {
             	markup.createMarkupPage(photoID)
-            },
-
-
-            createNewComment = function () {
-                //		console.log("new comment,  Photo : " + myPhotoObject.photoId);
             };
 
 
@@ -100,4 +86,5 @@ define([
                 return 0;
             }
         };
-    });
+    }
+);

@@ -6,7 +6,7 @@
         font-family: "Trebuchet MS"; 
       }
       #header {
-        background-image: url(../img/op_banner.png); background-repeat: repeat-x;
+        background-image: url(../../img/op_banner.png); background-repeat: repeat-x;
         margin: 2px;
         border: solid 4px #224a54;
         color:white; font-size:18pt; 

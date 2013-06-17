@@ -38,10 +38,10 @@ define([
 		},
 		myTest = function() {
 			var handles = [];
-				handles.push(domConstruct.create("button", {id: "adjustButton", innerHTML:"Adjust", disabled:true}));
-				handles.push(domConstruct.create("button", {id: "saveMUButton", innerHTML:"Save", disabled:true}));
-				handles.push(domConstruct.create("button", {id: "rotateButton", innerHTML:"Rotate", disabled:true}));
-				console.dir(handles);  
+				// handles.push(domConstruct.create("button", {id: "adjustButton", innerHTML:"Adjust", disabled:true}));
+				// handles.push(domConstruct.create("button", {id: "saveMUButton", innerHTML:"Save", disabled:true}));
+				// handles.push(domConstruct.create("button", {id: "rotateButton", innerHTML:"Rotate", disabled:true}));
+				// console.dir(handles);  
 		},
 		endLoading = function() {
 			// summary:
@@ -165,11 +165,11 @@ define([
 			}, refNode, posn);
 		};
 		return {
-			init: function() {
+			init: function() {return 1;
 			//	startLoading();
 				// register callback for when dependencies have loaded
 			//	startup();
-			myTest();
+		//	myTest();
 			}
 		};
 });

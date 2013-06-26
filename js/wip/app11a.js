@@ -44,8 +44,8 @@ define([
 					console.log('In router call back');
 		//			thumbnail.putPhotoOnSurface(event.params.id);
                 	thumbnail.putPhotoOnSurface(event.params.id);
-                    topic.publish("paintMarkupScreen", photoId);
-                    util.showMain();
+                 //   topic.publish("paintMarkupScreen", photoId);
+                 //   util.showMain();
 
 				});
 				console.log("Before router startup");

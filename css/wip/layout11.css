@@ -74,7 +74,7 @@
         -moz-border-radius: 4px;
         width: 1250px;
         height: 760px;
-        opacity: 0.0;
+        opacity: 1.0;
       }
       
       /*#photo {

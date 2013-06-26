@@ -10,33 +10,16 @@ define([
         util, thumbnail, markup  ) 
     {
         "use strict";
-        var  currentPhotoId, myRouter = router,
-
-            //        thumbnailTemplate = '<div>Name : {Name}\n<img class="thumbnail" id="{id}" src="img/{tname}"/><hr></div>',
-            //      markupAreaTemplate = '<div id="markupAreaDiv" >  </div>',
-            //     markupListTemplate = '<ul id="markupList" class="mulc"> </ul>',
-            //      divMainNode = dom.byId("main"),
-            //      surface,
-            //        divSurfaceElement,
-            
-            
-            backToStartButton = domConstruct.create("button", { id: "back2Start", innerHTML: "Select Photo" }),
-
-            handleBackToStart = on(backToStartButton, "click", function () {
-                util.clearMain();
-                setTimeout(function () {
-                    onEnd: {
-                        thumbnail.createPickPhotoPage();
-                        util.showMain();
-                    }
-                    //	console.log("in back to start on timeout");
-                }, 1000);
-            }),
-            decide = function () {
+        var thePicker = {}, thePhoto = {}, theMarkups = {}, theComments = {},  
+            decide = function (e) {
+            	console.log("decide:",e)
             	router.register("/photo/:id", function(event){
-					console.log("Router matched hash: " + event.params.id);
+					console.log("Router matched hash : ", event.params.id);
 					console.log('In router call back');
-					window.location.href ='showPhoto.html#/photo/'+ event.params.id;
+//					window.location.href ='showPhoto.html#/photo/'+ event.params.id;
+					util.clearMain();
+					thumbnail.putPhotoOnSurface(event.params.id);
+					util.showMain();
 				});
 
 				router.startup();
@@ -53,7 +36,8 @@ define([
                 });
                 
                 topic.subscribe("thumbnail", function (photoId) {
-					window.location.href ='showPhoto.html#/photo/'+ photoId;
+//					window.location.href ='showPhoto.html#/photo/'+ photoId;
+					router.go("/photo/" + photoId );
                     // currentPhotoId = photoId;
 //                     
                     // util.clearMain(); //.then(function(){
@@ -77,7 +61,7 @@ define([
                 //	console.log("in bottom of doit");
                 
                 thumbnail.createPickPhotoPage();
-                util.showMain();
+   //             util.showMain();
             };
         return {
             init: function () {

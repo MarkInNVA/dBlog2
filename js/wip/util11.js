@@ -14,21 +14,22 @@ define(
 			},			
 			
 			clearMain : function () {  // clear div Main (large center section)
-		//		console.log("Clearing main");
-				setTimeout(function(){
-					onEnd: domConstruct.empty(divMainNode)
-    			}, 1000);
-					baseFx.fadeOut({ 
-						node: dom.byId(divMainNode),
-						duration:1000,
-					}).play();
+				console.log("Clearing main");
+				domConstruct.empty(dom.byId(divMainNode));
+				// setTimeout(function(){
+					// onEnd: domConstruct.empty(divMainNode)
+    			// }, 1000);
+					// baseFx.fadeOut({ 
+						// node: dom.byId(divMainNode),
+						// duration:500,
+					// }).play();
 			} ,
 			
 			showMain : function() {
-				baseFx.fadeIn({ 
-					node: dom.byId(divMainNode),
-					duration:1000
-				}).play(); 				
+				// baseFx.fadeIn({ 
+					// node: dom.byId(divMainNode),
+					// duration:500
+				// }).play(); 				
 			},
 			// clearFooter : function(){
 				// baseFx.fadeOut({ 
@@ -42,9 +43,11 @@ define(
 				// }).play(); 			
 			// },
 			clearMarkup : function(){
+				console.log("Clearing markup");
+				domConstruct.empty(dom.byId("markupAreaDiv"));
 				baseFx.fadeOut({ 
 					node: dom.byId("markupAreaDiv"),
-					duration: 2500,
+					duration: 500,
 					onEnd: domConstruct.empty("markupAreaDiv")
 				}).play();			
 			},

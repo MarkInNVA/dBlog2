@@ -1,11 +1,11 @@
 define([
-    "dojo/dom", "dojo/dom-construct", "dojo/on", // "dojo/router",
+    "dojo/dom", "dojo/dom-construct", "dojo/dom-attr", "dojo/on", // "dojo/router",
     "dojo/_base/array", "dojo/_base/lang", "dojo/query", 
     "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/_base/declare",
     "dojo/store/JsonRest", "dojo/topic", "dojo/_base/fx", "dojox/gfx",
      "js/util12",  "js/markup12", "js/module"
 ],
-    function (dom, domConstruct, on, // router,
+    function (dom, domConstruct, domAttr, on, // router,
         arrayUtil, lang, query, 
         DataGrid, Selection, declare,
         JsonRest, topic, baseFx, gfx,
@@ -126,11 +126,11 @@ define([
 
                 util.placeOnMarkup('<div id="markupForm" >  </div>');
                 muNode = dom.byId("markupForm");
-                domConstruct.place('<div> X: <input type="text" id="mTBx" value="' + markup.x + '" /><br> </div>', muNode);
-                domConstruct.place('<div> Y: <input type="text" id="mTBy" value="' + markup.y + '" /><br> </div>', muNode);
-                domConstruct.place('<div> Radius: <input type="text" id="mTBr" value="' + markup.size + '" /><br> </div>', muNode);
-                domConstruct.place('<div> Label: <input type="text" id="mTBlbl" value="' + markup.label + '" /><br> </div>', muNode);
-                domConstruct.place('<div> Color: <input type="text" id="mTBcolor" value="' + markup.color + '" /><br> </div>', muNode);
+                domConstruct.place('<div> X: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" size="5" id="mTBx" value="' + markup.x + '" /><br> </div>', muNode);
+                domConstruct.place('<div> Y: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" size="5" id="mTBy" value="' + markup.y + '" /><br> </div>', muNode);
+                domConstruct.place('<div> Radius:  <input type="text" size="5" id="mTBr" value="' + markup.size + '" /><br> </div>', muNode);
+                domConstruct.place('<div> Label: &nbsp;&nbsp; <input type="text" size="17" id="mTBlbl" value="' + markup.label + '" /><br> </div>', muNode);
+                domConstruct.place('<div> Color: &nbsp;&nbsp; <input type="text" size="5" id="mTBcolor" value="' + markup.color + '" /><br> </div>', muNode);
                 
                 muList = domConstruct.create("ul", { id: "markupList", className: "mulc" }, "markupAreaDiv");
 
@@ -166,9 +166,43 @@ define([
                 });        	
         	},
         	markUpClick = function (e) {
-        		console.log(e);	
+        		var commNode, myCommentItem,
+        		commentFormTemplate = '<ul id="commentForm"> </ul>',
+        		commentItemTemplate = '<li class="commentItem">Received : {recv_date}, From: {from}<br>{comment} </li> ';
+        //		console.log(e);	
         		markupStore.query("/" + this.id).then(function (markup) {
-        			console.log(markup);
+        				domAttr.set("mTBx", "value", markup.x);
+	                    domAttr.set("mTBy", "value", markup.y);
+	                    domAttr.set("mTBr", "value", markup.size);
+	                    domAttr.set("mTBlbl", "value", markup.label); // Temp
+	                    domAttr.set("mTBcolor", "value", markup.color);
+        		//	console.log(markup);
+        	
+                     commNode = dom.byId("commentForm");
+                    if (commNode) {
+                        				console.log("have commNode, emptying it");
+                        domConstruct.empty(commNode);
+                    } else {
+                        				console.log("do not have commNode, creating one");
+                        util.placeOnMarkup(commentFormTemplate);
+                        //				domConstruct.place(commentFormTemplate, divMainNode);
+                        commNode = dom.byId("commentForm");
+                    }
+
+                    commentStore.query("/search/" + markup.fk_photos).then(function (comments) {
+                        				console.log("have " + comments.length + " total comments;");
+                        var c = 0;
+                        arrayUtil.forEach(comments, function (Result) {
+                            if (Result.fk_markups == markup.id) { // does === work here?
+                                c += 1;
+                                myCommentItem = lang.replace(commentItemTemplate, Result);
+                                domConstruct.place(myCommentItem, commNode);
+                                console.log(Result);
+                            }
+                        });
+                        //				console.log("have ", c);				
+                    });       	
+        		
         		});
         	},
         	putShapeOnSurface =  function (shape) {
@@ -177,20 +211,9 @@ define([
 
                 //				i = surface.createCircle({ cx: shape.x, cy: shape.y, r: shape.size }).setStroke({style: "shape.style"Dash"", width : shape.width, cap: shape.cap, color:shape.color});
                 //	test2			i = surface.createCircle({ cx: x , cy: y, r: shape.size }).setStroke({style: "Dash", width:3, cap:"butt", color:shape.color});
-                i = surface.createCircle({
-                    cx: shape.x,
-                    cy: shape.y,
-                    r: shape.size
-                }).setStroke({
-                    style: "Dash",
-                    width: 3,
-                    cap: "butt",
-                    color: shape.color
-                });
+                i = surface.createCircle({ cx: shape.x, cy: shape.y, r: shape.size }).setStroke({ style: "Dash", width: 3, cap: "butt", color: shape.color });
   //              console.log("I Put old ", i, "on surface");
             };    	    	
-			  
-			
            
         return {
             init: function () {

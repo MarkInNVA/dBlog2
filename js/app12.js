@@ -21,7 +21,7 @@ define([
            // 	console.log("Startup (app)");
             	
             	var grid; //, onH, backButton = domConstruct.create("button", {id: "backButton", innerHTML:"To Main"});
-            	
+            	domConstruct.empty("main");
             	util.placeOnMain(domConstruct.create("div", { id: "mainGrid" }));
 				util.placeOnMainGrid(domConstruct.create("div", { id: "photoGridContainer" }));
  
@@ -84,11 +84,12 @@ define([
 	            return '<img class="dgimg" src = img/' + value + '>';
     	    },
     	    putPhotoOnPage = function (photo) {
-    	    	var image, fw, fh;
+    	    	var image, fw, fh, markupButton, surfaceHandle;
     //            console.log("putPhotoOnPage, app, photoId :",photo.id);
 
-                topic.subscribe("haveSurface", function(surface)  {
+                surfaceHandle = topic.subscribe("haveSurface", function(surface)  {
                 	image = surface.createImage({ x: 10, y: 10, width: (photo.fx / 2), height: (photo.fy / 2), src: "img/" + photo.fname });
+                	surfaceHandle.remove();
                 	paintMarkUpDiv(photo);
                 	baseFx.fadeIn({ 
 						node: dom.byId("markupGridContainer"),
@@ -99,7 +100,15 @@ define([
                 
                 util.placeOnMainGrid('<div id="markupGridContainer" >  </div>');
                 util.placeOnMarkupGrid('<div id="surfaceElement" >  </div>');
-
+//
+                markupButton = domConstruct.create("button", { id: "back2Start", innerHTML: "Pick Photo" });
+      			
+                on.once(markupButton, "click", function(e) {
+                	startup();
+				});
+                
+                util.placeOnSurface(markupButton);
+//
 	            fw = (photo.fx / 2) + 10;
 	            fh = (photo.fy / 2) + 25;
 	            createSurface(fw, fh);

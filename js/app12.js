@@ -3,21 +3,34 @@ define([
     "dojo/_base/array", "dojo/_base/lang", "dojo/query", 
     "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/_base/declare",
     "dojo/store/JsonRest", "dojo/topic", "dojo/_base/fx", "dojox/gfx",
-     "js/util12",  "js/markup12", "js/module"
+     "js/util12", "js/module"
 ],
     function (dom, domConstruct, domAttr, on, // router,
         arrayUtil, lang, query, 
         DataGrid, Selection, declare,
         JsonRest, topic, baseFx, gfx,
-        util,  markup  ) 
+        util  ) 
     {
         "use strict";
         var  thumbnailStore, markupStore, commentStore, surface, // currentPhotoId, myRouter = router,
 
-
-			// setup JSONRest store, point grid at it, wait for row select, which returns the photoId for the next step (putPhotoOnPage)
+			preStartUp = function() {
+        		thumbnailStore = new JsonRest({ target: "api/index.php/photos" });
+        		
+        		markupStore = new JsonRest({ target: "api/index.php/markup" });
+        		
+        		commentStore = new JsonRest({ target: "api/index.php/comment" });
+        		
+				startUp();
+			},
+			fade = function(dir,node) {
+				if (dir === 'Out') { baseFx.fadeOut({ node: dom.byId(node), duration : 500 }).play(); }
+				if (dir === 'In')  { baseFx.fadeIn ({ node: dom.byId(node), duration : 500 }).play();
+				}
+			},
+			// point grid at it, wait for row select, which returns the photoId for the next step (putPhotoOnPage)
 			// html elements start : main, end 
-            startup = function () {
+            startUp = function () {
            // 	console.log("Startup (app)");
             	
             	var grid; //, onH, backButton = domConstruct.create("button", {id: "backButton", innerHTML:"To Main"});
@@ -27,19 +40,7 @@ define([
  
 				util.placeOnPhotoGridContainer(domConstruct.create("div", { id: "pl_label", innerHTML: "Select row to discuss photo", opacity: 0.0 }));
             	util.placeOnPhotoGridContainer(domConstruct.create("div", { id: "photoGrid" }));
-
-        		thumbnailStore = new JsonRest({
-            		target: "api/index.php/photos"
-        		});
-        		
-        		markupStore = new JsonRest({
-           			 target: "api/index.php/markup"
-        		});
-        		
-        		commentStore = new JsonRest({
-					target: "api/index.php/comment"
-        		});
-        		
+      		
                 grid = new(declare([DataGrid, Selection]))({
                     store: thumbnailStore, // a Dojo object store - css stuff for column widths, etc
                     columns: [
@@ -54,18 +55,12 @@ define([
                 grid.startup();
 
                 grid.on("dgrid-select", function (event) {
-	                baseFx.fadeOut({ 
-						node: dom.byId("photoGridContainer"),
-						duration: 500 
-					}).play();
-					
-                    setTimeout(function () {
-                   
+	                // baseFx.fadeOut({ node: dom.byId("photoGridContainer"), duration: 500 }).play();
+					fade( 'Out', "photoGridContainer" );
+                    setTimeout(function () {                 
                         onEnd: {
 			            	domConstruct.empty(dom.byId("mainGrid"));
-			            //	console.log("main :",dom.byId("main"));
-			            	
-		                    console.log("grid.on id:",event.rows[0].id);
+//		                    console.log("grid.on id:",event.rows[0].id);
 		                    thumbnailStore.query("/" + event.rows[0].id).then(function(photo) {
 			                    putPhotoOnPage(photo);	
 		                    });
@@ -74,10 +69,8 @@ define([
 
                 });
                 
-                baseFx.fadeIn({ 
-					node: dom.byId("photoGridContainer"),
-					duration: 500 
-				}).play();
+                fade( 'In', "photoGridContainer");
+                // baseFx.fadeIn({ node: dom.byId("photoGridContainer"), duration: 500 }).play();
             },                       	
           
    	         myFormatter = function (value) {
@@ -91,10 +84,8 @@ define([
                 	image = surface.createImage({ x: 10, y: 10, width: (photo.fx / 2), height: (photo.fy / 2), src: "img/" + photo.fname });
                 	surfaceHandle.remove();
                 	paintMarkUpDiv(photo);
-                	baseFx.fadeIn({ 
-						node: dom.byId("markupGridContainer"),
-						duration: 500 
-					}).play();
+                	fade('In', "markupGridContainer");
+                	// baseFx.fadeIn({ node: dom.byId("markupGridContainer"), duration: 500 }).play();
 					
                 });
                 
@@ -104,7 +95,13 @@ define([
                 markupButton = domConstruct.create("button", { id: "back2Start", innerHTML: "Pick Photo" });
       			
                 on.once(markupButton, "click", function(e) {
-                	startup();
+                //	fade('Out', "markupGridContainer");
+                	baseFx.fadeOut({ 
+						node: dom.byId("markupGridContainer"),
+						onEnd: startUp,
+						duration: 500 
+					}).play();
+                	
 				});
                 
                 util.placeOnSurface(markupButton);
@@ -135,27 +132,24 @@ define([
 
                 util.placeOnMarkup('<div id="markupForm" >  </div>');
                 muNode = dom.byId("markupForm");
-                domConstruct.place('<div> X: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" size="5" id="mTBx" value="' + markup.x + '" /><br> </div>', muNode);
-                domConstruct.place('<div> Y: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" size="5" id="mTBy" value="' + markup.y + '" /><br> </div>', muNode);
-                domConstruct.place('<div> Radius:  <input type="text" size="5" id="mTBr" value="' + markup.size + '" /><br> </div>', muNode);
-                domConstruct.place('<div> Label: &nbsp;&nbsp; <input type="text" size="17" id="mTBlbl" value="' + markup.label + '" /><br> </div>', muNode);
-                domConstruct.place('<div> Color: &nbsp;&nbsp; <input type="text" size="5" id="mTBcolor" value="' + markup.color + '" /><br> </div>', muNode);
+                domConstruct.place('<div> X: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" size="5" id="mTBx" placeholder="X value" /><br> </div>', muNode);
+                domConstruct.place('<div> Y: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" size="5" id="mTBy" placeholder="Y value" /><br> </div>', muNode);
+                domConstruct.place('<div> Radius:  <input type="text" size="5" id="mTBr" placeholder="Radius" /><br> </div>', muNode);
+                domConstruct.place('<div> Label: &nbsp;&nbsp; <input type="text" size="17" id="mTBlbl" placeholder="Label" /><br> </div>', muNode);
+                domConstruct.place('<div> Color: &nbsp;&nbsp; <input type="text" size="5" id="mTBcolor" placeholder="Color"  /><br> </div>', muNode);
                 
                 muList = domConstruct.create("ul", { id: "markupList", className: "mulc" }, "markupAreaDiv");
 
                 util.placeOnMarkup('<div id="photoDescription" >  </div>');
 				util.placeOnMarkup(lang.replace('<textarea  readonly id="photoDescription">Name : {Name}\nDescription : {description} </textarea>', photo));
                 
-                topic.subscribe("haveMarkup", function(markup)  {
-                	image = surface.createImage({ x: 10, y: 10, width: (photo.fx / 2), height: (photo.fy / 2), src: "img/" + photo.fname });
-                	paintMarkUpDiv(photo);
-                	baseFx.fadeIn({ 
-						node: dom.byId("markupGridContainer"),
-						duration: 500 
-					}).play();					
-                });
-                
-                
+                // topic.subscribe("haveMarkup", function(markup)  {
+                	// image = surface.createImage({ x: 10, y: 10, width: (photo.fx / 2), height: (photo.fy / 2), src: "img/" + photo.fname });
+                	// paintMarkUpDiv(photo);
+                	// fade('In', "markupGridContainer");
+                	// // baseFx.fadeIn({ node: dom.byId("markupGridContainer"), duration: 500 }).play();					
+                // });
+                               
                 markupStore.query("/search/" + photo.id).then(function (markups) {
                     if (markups === 0) {
                         domConstruct.place('<li class="markupItem">None</li>', muList);
@@ -221,12 +215,13 @@ define([
                 //				i = surface.createCircle({ cx: shape.x, cy: shape.y, r: shape.size }).setStroke({style: "shape.style"Dash"", width : shape.width, cap: shape.cap, color:shape.color});
                 //	test2			i = surface.createCircle({ cx: x , cy: y, r: shape.size }).setStroke({style: "Dash", width:3, cap:"butt", color:shape.color});
                 i = surface.createCircle({ cx: shape.x, cy: shape.y, r: shape.size }).setStroke({ style: "Dash", width: 3, cap: "butt", color: shape.color });
+                on(i.getEventSource(),"click", function(e) { console.log(e); })
   //              console.log("I Put old ", i, "on surface");
             };    	    	
            
         return {
             init: function () {
-                startup();
+                preStartUp();
                 return 0;
             }
         };

@@ -294,11 +294,12 @@
       }
       
       #back2Start{
-      	position: absolute;
-      	top:  670px;
-    	left: 320px;
-      
-        margin:0px;
+      	position: absolute;  
+/*      	top:  670px;  */
+		bottom:10px;
+    	left: 48%;
+        margin: 0 auto;
+        /* margin:0px; */
 
 
       }

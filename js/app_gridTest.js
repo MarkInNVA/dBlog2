@@ -17,63 +17,36 @@ define([
         
             startUp = function () {
            // 	console.log("Startup (app)");
-            	
-            	
+            	           	
             var grid, d, photo, togGrid, togPhoto, togmainGrid, divGrid, divPhoto; //, onH, backButton = domConstruct.create("button", {id: "backButton", innerHTML:"To Main"});
 
        		thumbnailStore = new JsonRest({ target: "api/index.php/photos" });
 
-			togGrid = new Toggler({
-				node: "gridContainer",
-			    showDuration: 1000,
-			    hideDuration: 1000
-			});
-			togPhoto = new Toggler({
-				node: "photoContainer",
-			    showDuration: 3000,
-			    hideDuration: 5000
-			});
-			
-			togmainGrid= new Toggler({
-				node: "mainGrid",
-			    showDuration: 3000,
-			    hideDuration: 5000
-			});
-			
         	d = domConstruct.create("div", { id: "mainGrid" });
         	domConstruct.place(d, "main");
 
         	divGrid  = domConstruct.create("div", { id: "gridContainer" });
         	divPhoto = domConstruct.create("div", { id: "photoContainer" });
         	domConstruct.place(divGrid, dom.byId("mainGrid"));
-	//		domConstruct.place(divPhoto, "mainGrid");
-
-        		
-		//	setTimeout(togmainGrid.hide(), 1000);
 			
-                photoHandle = topic.subscribe("havePhoto", function(data)  {
-                	fade("Out","gridContainer")
-                	setTimeout(function(){
-		               	domConstruct.empty(dom.byId("mainGrid"));
-		               	domConstruct.place(divPhoto, "mainGrid");
-	    	           	fade("In", "photoContainer" )
-	                	photoHandle.remove();
-                		
-                	}, 1000);
-					console.log("from app_gridTest  data :", data);					
-                });
-            	
-
-				// photo = new PhotoWidget({
-				//	 data: 1
-				// },"mainGrid"); 	
-				
-				grid = new GridWidget({
-					aStore: thumbnailStore
-				},"gridContainer"); 	
-		//		fade("In","gridContainer");
-            // }
-//     	    
+            photoHandle = topic.subscribe("havePhoto", function(data)  {
+            	fade("Out","gridContainer")
+            	setTimeout(function(){
+	               	domConstruct.empty(dom.byId("mainGrid"));
+	               	domConstruct.place(divPhoto, "mainGrid");
+					photo = new PhotoWidget({
+						 theData: data
+					},"photoContainer"); 	
+    	           	fade("In", "photoContainer" )
+                	photoHandle.remove();
+            		
+            	}, 1000);
+		//		console.log("from app_gridTest  data :", data);					
+            });
+            					
+			grid = new GridWidget({
+				aStore: thumbnailStore
+			},"gridContainer"); 	
 		},
 		fade = function(dir,node) {
 			if (dir === 'Out') { baseFx.fadeOut({ node: dom.byId(node), duration : 800 }).play(); }

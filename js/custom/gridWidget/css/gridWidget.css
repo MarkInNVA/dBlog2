@@ -1,0 +1,38 @@
+	.gridWidget {
+    	/*width: 100%;
+    	height:100%;
+    	padding: 0px; 
+    	overflow: hidden;   */ 
+    	/* I hear this helps clear floats inside */
+    	 /*     	border:inset thick gray;	*/	
+	}
+	#gridNode{
+    	width: 100%;
+    	height:100%;
+    	/*bottom:10px;*/
+    	padding: 0px;
+    	margin: 0px;
+   	}
+	/*.grid {
+		width:500px;
+		height:500px;
+	}*/
+	
+    .field-id {
+        width: 20px;
+    }
+    .field-Name {
+        width: 200px;
+    }
+    .field-description {
+      width: 460px;
+    }
+    .field-tname {
+    	width:355px;
+    }
+    .dgrid-row {
+    	height: 300px;
+    }
+    .dgimg {
+    	width:350px;
+    }

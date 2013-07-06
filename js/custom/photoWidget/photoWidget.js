@@ -6,26 +6,20 @@ define(["dojo/_base/declare","dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo
     		) {
         return declare([WidgetBase, TemplatedMixin], {
         	name: "No Name",
-
             templateString: template,
- 
             baseClass: "photoWidget",
  
    			postCreate: function(){
+   				var _markups = {};
+				this.inherited(arguments);   // Run any parent postCreate processes - can be done at any point
    				
 				var surfaceHandle = topic.subscribe("haveSurface", function( data, surface )  {
                 	var image = surface.createImage({ x: 0, y: 0, width: ( data.fx / 2), height: ( data.fy / 2), src: "img/" + data.fname });
                 	paintMarkUps( data, surface );
                 	surfaceHandle.remove();
                 });
-
-				this.inherited(arguments);   // Run any parent postCreate processes - can be done at any point
 				
-      	        // fw = (this.theData.fx / 2) + 10;
-	            // fh = (this.theData.fy / 2) + 25;
-	            
 	            createSurface(this.theData, this.domNode);                  
-	            
 			}
         });
 		function createSurface(data, node) {

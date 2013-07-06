@@ -2,25 +2,22 @@ define([
     "dojo/dom", "dojo/dom-construct", "dojo/dom-attr", "dojo/on", 
     "dojo/_base/array", "dojo/_base/lang", "dojo/query", 
     "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/_base/declare",
-    "dojo/store/JsonRest", "dojo/topic", "dojo/fx/Toggler", "dojo/_base/fx",
+    "dojo/topic", "dojo/fx/Toggler", "dojo/_base/fx",
       "custom/gridWidget/gridWidget",       "custom/photoWidget/photoWidget"
-
 ],
     function (dom, domConstruct, domAttr, on, 
         arrayUtil, lang, query, 
         DataGrid, Selection, declare,
-        JsonRest, topic, Toggler, baseFx,
-         GridWidget, PhotoWidget  ) 
+        topic, Toggler, baseFx,
+        GridWidget, PhotoWidget  ) 
     {
         "use strict";
-        var  thumbnailStore, photoHandle,
+        var  photoHandle,
         
             startUp = function () {
            // 	console.log("Startup (app)");
             	           	
             var grid, d, photo, togGrid, togPhoto, togmainGrid, divGrid, divPhoto; //, onH, backButton = domConstruct.create("button", {id: "backButton", innerHTML:"To Main"});
-
-       		thumbnailStore = new JsonRest({ target: "api/index.php/photos" });
 
         	d = domConstruct.create("div", { id: "mainGrid" });
         	domConstruct.place(d, "main");
@@ -44,9 +41,7 @@ define([
 		//		console.log("from app_gridTest  data :", data);					
             });
             					
-			grid = new GridWidget({
-				aStore: thumbnailStore
-			},"gridContainer"); 	
+			grid = new GridWidget({ },"gridContainer"); 	
 		},
 		fade = function(dir,node) {
 			if (dir === 'Out') { baseFx.fadeOut({ node: dom.byId(node), duration : 800 }).play(); }

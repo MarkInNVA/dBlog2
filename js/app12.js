@@ -49,24 +49,23 @@ define([
                     	{ label: "Name",        field: "Name",        sortable: false }, 
                     	{ label: "Description", field: "description", sortable: false }
                     ],
-                    "class": "sage",
+                    
                     selectionMode: "single"
                 }, "photoGrid");
                 grid.startup();
 
                 grid.on("dgrid-select", function (event) {
-	                // baseFx.fadeOut({ node: dom.byId("photoGridContainer"), duration: 500 }).play();
+	                // // baseFx.fadeOut({ node: dom.byId("photoGridContainer"), duration: 500 }).play();
 					fade( 'Out', "photoGridContainer" );
                     setTimeout(function () {                 
-                        onEnd: {
+                    	onEnd: {
 			            	domConstruct.empty(dom.byId("mainGrid"));
-//		                    console.log("grid.on id:",event.rows[0].id);
+// //		                    console.log("grid.on id:",event.rows[0].id);
 		                    thumbnailStore.query("/" + event.rows[0].id).then(function(photo) {
-			                    putPhotoOnPage(photo);	
+			                	putPhotoOnPage(photo);	
 		                    });
                         }
                     }, 500);
-
                 });
                 
                 fade( 'In', "photoGridContainer");

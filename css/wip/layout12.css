@@ -147,7 +147,8 @@
     /* 	background-color: wheat; */
 /*      	border:inset thick gray; */
       	opacity: 0.0;
-      }#markupGridContainer {
+      }
+      #markupGridContainer {
       	position: absolute;
         top:  5px;
       	left: 5px;

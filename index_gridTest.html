@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>OP Lab Photo Discussion</title>
-		<link rel="stylesheet" href="css/layout13.css" media="screen">   
+		<link rel="stylesheet" href="css/app_gridTest.css" media="screen">    
 	    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/resources/dojo.css">
 		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dijit/themes/claro/claro.css" media="screen">  
 		<!-- <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dijit/themes/tundra/tundra.css" media="screen"> -->  
@@ -11,6 +11,7 @@
 		<link rel="stylesheet" href= "js/vendor/dgrid-master/css/dgrid.css">    
 		<link rel="stylesheet" href= "js/vendor/dgrid-master/css/skins/claro.css">
 		<link rel="stylesheet" href= "js/custom/gridWidget/css/gridWidget.css">
+		<link rel="stylesheet" href= "js/custom/photoWidget/css/photoWidget.css">
 
 		<script>
 			var dojoConfig = (function(){
@@ -21,7 +22,7 @@
 				return {
 					async: true,
 					isDebug: false,
-					parseOnLoad: false,
+					parseOnLoad: true,
 					packages: [{
 						name: "dgrid",
 						location: base + "/js/vendor/dgrid-master"
@@ -61,7 +62,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>    
   	
 	 <script>
-		 require(["js/app13", "dojo/domReady!"], function(jsApp) {
+		 require(["js/app_gridTest", "dojo/domReady!"], function(jsApp) {
 	 		jsApp.init();
 	 //		console.log("end of html require app");
 		 });

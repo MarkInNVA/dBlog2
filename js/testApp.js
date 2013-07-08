@@ -163,12 +163,21 @@ define([
 				id: refNode.id + "_" + item.id,
 				innerHTML: string.substitute(itemTemplate, props)
 			}, refNode, posn);
+		},		
+		startUp2 = function () {
+			var id = 1;
+			var markupStore;
+			markupStore = new JsonRest({ target: "api/index.php/markupLoc" });  
+			markupStore.query("/" + id).then(function (markup) {
+				console.log(markup);
+			});
 		};
+      
 		return {
-			init: function() {return 1;
+			init: function() {
 			//	startLoading();
 				// register callback for when dependencies have loaded
-			//	startup();
+				startUp2();
 		//	myTest();
 			}
 		};

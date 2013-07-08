@@ -13,6 +13,7 @@ $app->delete('/photos/:id',	'deletePhoto');
 
 $app->get('/markup', 'getMarkups');
 $app->get('/markup/:id',	'getMarkup');
+$app->get('/markupLoc/:id',    'getMarkupLoc');
 $app->get('/markup/search/:query', 'findMarkupByName');
 $app->post('/markup', 'addMarkup');
 $app->put('/markup/:id', 'updateMarkup');
@@ -159,16 +160,28 @@ function getMarkups() {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }
-
+// , unnest(loc)
+// function getMarkup($id) {
+    // $sql = "SELECT id, fk_photos, x, y, size, label, color FROM photo_markup WHERE id=:id";
+    // try {
+        // $db = getConnection();
+        // $stmt = $db->query($sql);  
+        // $markups = $stmt->fetchAll(PDO::FETCH_OBJ);
+        // $db = null;
+        // // echo '{"wine": ' . json_encode($wines) . '}';
+        // echo json_encode($markups);
+    // } catch(PDOException $e) {
+        // echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+    // }}
 
 function getMarkup($id) {
-	$sql = "SELECT * FROM photo_markup WHERE id=:id";
+	$sql = "SELECT id, fk_photos, x, y, size, label, color, loc FROM photo_markup WHERE id=:id";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
 		$stmt->bindParam("id", $id);
 		$stmt->execute();
-		$photo = $stmt->fetchObject();  
+		$photo = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$db = null;
 		echo json_encode($photo); 
 	} catch(PDOException $e) {
@@ -176,6 +189,25 @@ function getMarkup($id) {
 	}
 }
 
+
+
+//getMarkupLoc
+function getMarkupLoc($id) {
+   // $sql = "SELECT array_to_json(loc2)  FROM photo_markup WHERE id=:id";
+    $sql = "SELECT  x,y  FROM loc where fk_id = :id order by id";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);  
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+        $photo = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+ //       echo $photo; 
+        echo json_encode($photo); 
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+    }
+}
 
 function addMarkup() {
 //	error_log('addMarkup\n', 3, 'php.log');

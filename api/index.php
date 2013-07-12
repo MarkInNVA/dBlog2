@@ -13,9 +13,10 @@ $app->delete('/photos/:id',	'deletePhoto');
 
 $app->get('/markup', 'getMarkups');
 $app->get('/markup/:id',	'getMarkup');
-$app->get('/markupLoc/:id',    'getMarkupLoc');
+$app->get('/markuploc/:pid/:mid',    'getMarkupLoc');
 $app->get('/markup/search/:query', 'findMarkupByName');
 $app->post('/markup', 'addMarkup');
+$app->post('/markuploc', 'addMarkupLoc');
 $app->put('/markup/:id', 'updateMarkup');
 $app->delete('/markup/:id',	'deleteMarkup');
 
@@ -190,15 +191,15 @@ function getMarkup($id) {
 }
 
 
-
-//getMarkupLoc
-function getMarkupLoc($id) {
-   // $sql = "SELECT array_to_json(loc2)  FROM photo_markup WHERE id=:id";
-    $sql = "SELECT  x,y  FROM loc where fk_id = :id order by id";
+function getMarkupLoc($pid, $mid) {
+//	echo $pid, $mid;
+   // $sql = "SELECT array_to_json(loc2)  FROM photo_markup WHERE photoid=:pid and markupid:mid order by id";
+    $sql = "SELECT  x,y  FROM markuploc where photoid = :pid and markupid = :mid order by id";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);  
-        $stmt->bindParam("id", $id);
+        $stmt->bindParam("pid", $pid);
+        $stmt->bindParam("mid", $mid);
         $stmt->execute();
         $photo = $stmt->fetchAll(PDO::FETCH_OBJ);
         $db = null;
@@ -208,6 +209,24 @@ function getMarkupLoc($id) {
         echo '{"error":{"text":'. $e->getMessage() .'}}'; 
     }
 }
+
+// //getMarkupLoc
+// function getMarkupLoc($id) {
+   // // $sql = "SELECT array_to_json(loc2)  FROM photo_markup WHERE id=:id";
+    // $sql = "SELECT  x,y  FROM loc where fk_id = :id order by id";
+    // try {
+        // $db = getConnection();
+        // $stmt = $db->prepare($sql);  
+        // $stmt->bindParam("id", $id);
+        // $stmt->execute();
+        // $photo = $stmt->fetchAll(PDO::FETCH_OBJ);
+        // $db = null;
+ // //       echo $photo; 
+        // echo json_encode($photo); 
+    // } catch(PDOException $e) {
+        // echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+    // }
+// }
 
 function addMarkup() {
 //	error_log('addMarkup\n', 3, 'php.log');
@@ -224,9 +243,67 @@ function addMarkup() {
 		$stmt->bindParam("label", $photo_markup->label);
 		$stmt->bindParam("color", $photo_markup->color);
 		$stmt->execute();
-		$photo_markup->id = $db->lastInsertId();
+		$photo_markup->id = $db->lastInsertId("photo_markup_id_seq");
 		$db = null;
 		echo json_encode($photo_markup); 
+	} catch(PDOException $e) {
+//		error_log($e->getMessage(), 3, 'php.log');
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+// function addMarkupLoc() {
+// //	error_log('addMarkup\n', 3, 'php.log');
+	// $request = Slim::getInstance()->request();
+	// $photo_markup = json_decode($request->getBody());
+	 // echo $photo_markup;
+	// $sql = "INSERT INTO markuploc (photoid,markupid, x, y) VALUES (?,?, ?,?)";
+	// try {
+		// $db = getConnection();
+		// $stmt = $db->prepare($sql);  
+		// $stmt->bindParam(1, $photo_markup->Array[0]);
+		// $stmt->bindParam(2, $photo_markup[1]);
+		// $stmt->bindParam(3, $photo_markup[2]);
+		// $stmt->bindParam(4, $photo_markup[3]);
+		// $stmt->execute();
+		// $photo_markup->id = $db->lastInsertId("photo_markup_id_seq");
+		// $db = null;
+		// echo json_encode($photo_markup); 
+	// } catch(PDOException $e) {
+// //		error_log($e->getMessage(), 3, 'php.log');
+		// echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	// }
+// }
+
+function addMarkupLoc() {
+//	error_log('addMarkup\n', 3, 'php.log');
+	$request = Slim::getInstance()->request();
+	$photo_markup = json_decode($request->getBody());
+	$sql = "INSERT INTO markuploc (photoid, markupid, x, y) VALUES (?, ?, ?, ?)";
+//	$a = $photo_markup->array;
+//	print_r($photo_markup);
+
+//	echo json_encode($photo_markup);	
+		try {
+		$db = getConnection();
+	 	$stmt = $db->prepare($sql);  
+ 		
+		$stmt->bindParam( 1, $pid);
+		$stmt->bindParam( 2, $mid);
+		$stmt->bindParam( 3, $x);
+		$stmt->bindParam( 4, $y);
+// 		
+		foreach ($photo_markup as $row) {
+			$pid = $row[0];
+			$mid = $row[1];
+			$x   = $row[2];
+			$y   = $row[3];
+			$stmt->execute();
+		}
+		
+		
+//		$photo_markup->id = $db->lastInsertId();
+		$db = null;
+//		echo json_encode($photo_markup); 
 	} catch(PDOException $e) {
 //		error_log($e->getMessage(), 3, 'php.log');
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 

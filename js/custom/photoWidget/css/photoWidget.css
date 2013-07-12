@@ -15,14 +15,70 @@
     	background-color: wheat;
    	}
 
-    #mainGrid {
-      	position: absolute;
-        top:  5px;
-      	left: 5px;
-      	height:730px;
-      	width: 1230px;
-    /*  	background-color: wheat;  */ 
-      	border:inset thick gray;
-      	opacity: 1.0;
-      	
-    }
+
+	.photoWidgetTitle {
+		position: absolute;
+		top:  5px;
+		left: 760px;
+//		height: 705px;
+		height: 120px;
+		width: 465px;
+ 		opacity:1.0;  
+		background-color: #a3F3D3;  
+		/*padding-top:10px;
+		padding-left:10px;*/
+		font-family: "Trebuchet MS";
+		font-size:medium;
+		overflow: auto;
+  	border:inset thick gray;  
+ }
+  
+  .photoWidgetmarkups {
+		position: absolute;
+		top:  135px;
+		left: 760px;
+		height: 180px;
+		width: 465px;
+ 		opacity:1.0;  
+		background-color: #a3a333;  
+		
+		/*padding-top:10px;
+		padding-left:10px;*/
+		font-family: "Trebuchet MS";
+		font-size:medium;
+		overflow: auto;
+  		border:inset thick gray;  
+ 	}
+ 	#mu_addButton {
+ 	}
+ 	
+  .photoWidgetmuButtons {
+ 		position: absolute;
+		top:  140px;
+		right: 40px;
+  }   
+ 
+ /*.photoWidgetmuSButtons {
+		position: absolute;
+		top:  140px;
+		left: 1095px;
+ 	}*/ 	
+ 	
+/*  .photoWidgetmuButtons {
+ 		padding-left: 10px;
+ 		padding-top: 5px;
+ 		position: absolute;
+		top:  390px;
+		left: 954px;
+		height: 50px;
+		width: 450px;
+ 		opacity:1.0;  
+		background-color: #33a3a3;  
+		
+		font-family: "Trebuchet MS";
+		font-size:medium;
+		overflow: auto;
+  		border:inset thick gray;;  
+  } */ 
+     
+ 	  

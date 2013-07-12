@@ -1,0 +1,261 @@
+      html, body { 
+        height: 750px; 
+        width: 1250px; 
+     /*   margin: 0; */
+        margin-right:  auto;
+	  	margin-left: auto;        
+      } 
+      
+      body{
+        background-color:white; overflow:auto; 
+        font-family: "Trebuchet MS";
+
+        overflow: auto;
+        box-sizing: "border-box";
+      }
+      
+      #header {
+      	position: absolute;
+        top:  0px;
+        left: 0px;
+        padding-left:5px;
+        padding-top:5px;
+        background-image: url(../img/banner.jpg); 
+        background-repeat: repeat-x;        
+        margin: 0px;      
+        width: 1245px;
+        border: solid 2px #224a54;
+        color:black; font-size:18pt; 
+        text-align:left; 
+        font-weight:bold; 
+        height:50px;
+        opacity: 1.0;  	  
+
+      }
+      
+      #subheader {
+        font-size:small;
+        color:white;
+        padding-left:20px;
+        padding-bottom: 5px;
+      }
+
+	   	  
+      #main {
+        position: absolute;
+        top:  58px; /* 94px; */
+        left: 0px;
+        margin: 0px;
+        border:solid 2px #224a54;
+        /*  background: #eaeaea url('../img/bg.png'); */
+   /*   background-color: gray; */
+        /*-moz-border-radius: 4px;*/
+        width: 1250px;
+        height: 750px;
+        opacity: 1.0;
+      }
+      
+      
+      /*#pl_label {
+      	font-size:18pt; 
+      	position: absolute;
+      	top:  10px;
+    	left: 150px;
+      }
+      #pl_label2 {
+        font-size:18pt; 
+        position: absolute;
+        top:  10px;
+      left: 500px;
+      }*/
+
+      #mainGrid {
+      	position: absolute;
+        top:  5px;
+      	left: 5px;
+      	height:730px;
+      	width: 1230px;
+    /*  	background-color: wheat;  */ 
+      	border:inset thick gray;
+      	opacity: 1.0;
+      	
+      }
+      /*#photoList {
+      	position: absolute;
+      	top:  45px;
+    	left: 25px;
+      	
+      	width: 360px;
+      	height: 680px;      	
+      	margin: 0px;
+      	padding: 10px;
+      	border:solid 2px #2f4aa4;
+      	background-color: #DDEEFF;
+      	overflow: auto;
+      }*/
+      #gridContainer {
+      	position: absolute;
+        top:  5px;
+      	left: 5px;
+      	height:720px;
+      	width: 1220px;
+       	background: #eaeaea url('../img/bg.png'); 
+    /* 	background-color: wheat; */
+/*      	border:inset thick gray; */
+      	opacity: 0.0;
+      }
+      #photoContainer {
+      	position: absolute;
+        top:  5px;
+      	left: 5px;
+      	height:720px;
+      	width: 1220px;
+      	background: #eaeaea url('../img/bg.png');
+/*      	background-color: wheat;   */
+/*      	border:inset thick gray;   */
+      	opacity: 0.0;
+      }
+	  .gridWidget{
+      	height:720px;
+      	width: 1220px;
+	  	
+	  }
+      
+      #photoGrid {
+        position: absolute;
+        top:  50px;
+      left: 5px;
+      height:660px;
+      width: 1200px; /* need an extra 20 or so pixels for scrollbar, etc    */
+	/*  background-color: cornsilk;  */
+	        }
+
+      #photoDescription {
+      	position: absolute;
+      	top:  0px;
+    	left: 0px;
+    	width: 420px;
+    	height: 125px;
+
+      }
+      /*.mulc {
+      	left: 800px;
+      	top: 50px;
+      }*/
+     
+     #markupAreaDiv {
+      	position: absolute;
+      	top:  10px;
+    	left: 790px;
+    	height: 705px;
+    	width: 420px;
+     	opacity:1.0;  
+   	background-color: #a3F3D3;  
+    /*  	border:solid 2px #2f4aa4;  */
+     }
+       #markUpButton {
+      	position: absolute;  
+      	top:  5px;
+    	left: 5px;
+/*      	width: 125px;
+      	height: 200px;  */      	
+       }
+       #markupList {
+      	position: absolute;
+      	top:  150px;
+    	left: 0px;
+      	width: 163px;
+      	height: 160px;      	
+      	margin: 0px;
+  /*    	padding-left: 2em; */
+  /*    	text-indent: 2em;  */
+      	background-color: #DDFFDD;
+      	border:solid 2px #224a54;
+      	overflow: auto;
+      }
+      #markupLabel{
+     	position: absolute;   
+      	top:  135px;
+    	left: 15px;	
+      }
+      
+      #markupItem {
+        left: 0px;      	
+      }
+      #markupForm {
+      	position: absolute;
+      	top:  150px;
+    	left: 215px;
+      	width: 195px;
+      	height: 150px;
+      	padding-top:  10px;  
+      	padding-left: 5px;     	
+        border:solid 2px #224a54;      	
+      }
+      #markupFormLabel {
+      	position: absolute;
+      	top:  135px;
+    	left: 250px;      	
+      }
+      #adjustButton {
+      	position: absolute;
+      	top:  185px;
+/*    	left: 235px;      	*/
+    	left: 185px;      	      	
+      }
+      #saveMUButton {
+      	position: absolute;
+      	top:  185px;
+    	left: 250px;      	      	
+      }
+      #rotateButton{
+      	position: absolute;
+      	top:  185px;
+    	left: 350px;      	      	      	
+      }      
+      #commentButton{
+      	position: absolute;
+      	top:  235px;
+    	left: 5px;      	
+      }
+      #commentLabel {
+      	position: absolute;
+      	top:  240px;
+    	left: 185px;
+      }
+       
+       #commentForm {
+      	position: absolute;
+      	top:  335px;
+    	left: 0px;
+      	width: 395px;
+      	height: 365px;      	
+      	margin: 0px;
+      	padding-left: 20px;
+
+      	overflow: auto;
+      	border:solid 2px #224a54; 
+      }
+      
+      #backButton{
+      	position: absolute;  
+/*      	top:  670px;  */
+		bottom:10px;
+    	left: 300px;;
+        margin: 0 auto;
+        /* margin:0px; */
+
+
+      }
+      #surfaceElement {
+      	position: absolute;
+      	top:  5px;
+      	left: 5px; 
+	  	width:775px;
+	  	height: 710px;
+	  	overflow: auto;
+      	background-color: black;
+        opacity:1.0;
+      }
+
+  

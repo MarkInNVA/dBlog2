@@ -1,0 +1,104 @@
+     html, body { 
+        height: 750px; 
+        width: 1250px; 
+     /*   margin: 0; */
+        margin-right:  auto;
+	  	margin-left: auto;        
+      } 
+      
+      body{
+       /* background-color:gray; overflow:auto; */ 
+        font-family: "Trebuchet MS";
+
+        overflow: auto;
+        box-sizing: "border-box";
+      }
+      
+      #header {
+      	position: absolute;
+        top:  0px;
+        left: 0px;
+        padding-left:5px;
+        padding-top:5px;
+        background-image: url(../img/banner.jpg); 
+        background-repeat: repeat-x;        
+        margin: 0px;      
+        width: 1245px;
+        border: solid 2px #224a54;
+        color:black; font-size:18pt; 
+        text-align:left; 
+        font-weight:bold; 
+        height:50px;
+        opacity: 1.0;  	  
+
+      }
+      
+      #subheader {
+        font-size:small;
+        color:white;
+        padding-left:20px;
+        padding-bottom: 5px;
+      }
+
+      #main {
+        position: absolute;
+        top:  58px; /* 94px; */
+        left: 0px;   
+        margin: 0px;
+        border:solid 2px #224a54;
+        /*  background: #eaeaea url('../img/bg.png'); */
+   /*   background-color: gray; */
+        /*-moz-border-radius: 4px;*/
+        width: 1250px;
+        height: 750px;
+        opacity: 1.0;
+      }
+      
+
+      #mainGrid {
+      	position: absolute;
+        padding-left:5px;
+        padding-top:5px;
+      	height:735px;
+      	width: 1235px;
+      	background: #eaeaea url('../img/bg.png');
+/*      	background-color: wheat;  */
+      	border:inset thick gray;
+      	opacity: 1.0;
+      	
+      }
+
+      #gridContainer {
+      	/*position: absolute;
+        top:  5px;
+      	left: 5px;*/
+      	height:720px;
+      	width: 1220px;
+       	background: #eaeaea url('../img/bg.png'); 
+    /* 	background-color: wheat; */
+/*      	border:inset thick gray; */
+      	opacity: 0.0;
+      }
+      #photoContainer {
+      	/*position: absolute;
+        top:  5px;
+      	left: 5px;*/
+      	height:720px;
+      	width: 1220px;
+      	background: #eaeaea url('../img/bg.png');
+/*      	background-color: wheat;   */
+/*      	border:inset thick gray;   */
+      	opacity: 0.0;
+      }
+      
+	#photoText {
+      	position: absolute;
+        top:  58px;
+      	left: 790px;*/
+      	height:720px;
+      	width: 1220px;
+      	background: #eaeaea url('../img/bg.png');
+/*      	background-color: wheat;   */
+      	border:inset thick gray;   
+      	opacity: 1.0;		
+	}

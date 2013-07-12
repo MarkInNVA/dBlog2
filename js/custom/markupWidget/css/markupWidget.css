@@ -1,0 +1,13 @@
+    .markupAreaClass {
+ 		position: absolute;
+		top:  135px;
+		left: 755px;
+      	height:130px;
+      	width: 415px;
+    /*  	background-color: wheat;  */ 
+      	border:inset thick gray;
+      	opacity: 1.0;
+      	
+    }
+    
+    

@@ -1,0 +1,45 @@
+	.photoWidget {
+    	/*width: 100%;
+    	height:100%;
+    	padding: 0px; 
+    	overflow: hidden;   */ 
+    	/* I hear this helps clear floats inside */
+    	 /*     	border:inset thick gray;	*/	
+	}
+	#photoNode{
+    	width: 100%;
+    	height:100%;
+    	/*bottom:10px;*/
+    	padding: 0px;
+    	margin: 0px;
+    	background-color: wheat;
+   	}
+
+    #mainGrid {
+      	position: absolute;
+        top:  5px;
+      	left: 5px;
+      	height:730px;
+      	width: 1230px;
+    /*  	background-color: wheat;  */ 
+      	border:inset thick gray;
+      	opacity: 1.0;
+      	
+    }
+    
+	.titleWidgetTitle {
+		position: absolute;
+		top:  500px;
+		left: 755px;
+//		height: 705px;
+		height: 80px;
+		width: 445px;
+ 		opacity:1.0;  
+		background-color: #a33333;  
+		/*padding-top:10px;
+		padding-left:10px;*/
+		font-family: "Trebuchet MS";
+		font-size:medium;
+  	border:solid 2px #2f4aa4;  
+ }
+     

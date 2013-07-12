@@ -13,6 +13,11 @@ define(["dojo/_base/declare","dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo
  
    			postCreate: function(){
    				var _grid, thumbnailStore = new JsonRest({ target: "api/index.php/photos" });
+   				
+   				topic.subscribe("refreshGrid", function() {
+   					console.log("grid being refreshed!");
+   					_grid.refresh();
+   				});
 
 				this.inherited(arguments);   // Run any parent postCreate processes - can be done at any point
 

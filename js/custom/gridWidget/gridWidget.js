@@ -15,7 +15,7 @@ define(["dojo/_base/declare","dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo
    				var _grid, thumbnailStore = new JsonRest({ target: "api/index.php/photos" });
    				
    				topic.subscribe("refreshGrid", function() {
-   					console.log("grid being refreshed!");
+   			//		console.log("grid being refreshed!");
    					_grid.refresh();
    				});
 

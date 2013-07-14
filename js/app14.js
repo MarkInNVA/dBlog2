@@ -29,6 +29,7 @@ define([
             	backButton = domConstruct.create("button", {id: "backButton", innerHTML:"Select New Photo"});
 
             	domConstruct.empty("main");
+            	
             	util.placeOnMain(domConstruct.create("div", { id: "mainGrid" }));
             	
 	          	divGrid  = domConstruct.create("div", { id: "gridContainer" });

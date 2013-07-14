@@ -61,6 +61,17 @@
   .markupWidget {
   	color:red;
   }
+
+	#gridNode{
+    	width:  300px;
+    	height: 150px;
+    	left: 250px;
+    	top: 200px;
+    	/*bottom:10px;*/
+    	padding: 0px;
+    	margin: 0px;
+    	background-color: #35a335; 
+   	}
  /*.photoWidgetmuSButtons {
 		position: absolute;
 		top:  140px;

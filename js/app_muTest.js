@@ -2,36 +2,52 @@ define([
     "dojo/dom", "dojo/dom-construct", "dojo/dom-attr", "dojo/on", // "dojo/router",
     "dojo/_base/array", "dojo/_base/lang", "dojo/query", 
     "dojo/store/JsonRest", "dojo/topic", "dojo/_base/fx", "dojox/gfx",
-    "custom/photoWidget/photoWidget"
+    "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/_base/declare"
+//    "custom/photoWidget/photoWidget"
 ],
     function (dom, domConstruct, domAttr, on, // router,
         arrayUtil, lang, query, 
         JsonRest, topic, baseFx, gfx,
-        PhotoWidget
+        DataGrid, Selection, declare
+   //     PhotoWidget
     ){
         "use strict";
-        var showDialog, hideDialog, startUp = function () {
-           // 	console.log("Startup (app)");
-;    	
-            var d, photo,  divGrid, divPhoto, divText, id, 
-                thumbnailStore = new JsonRest({ target: "api/index.php/photos" });
+        var showDialog, hideDialog, 
+        
+        startUp = function () {
+    	
+            var d, photo,  divGrid, divPhoto, divText, id,
+            markupStore = new JsonRest({ target: "api/index.php/markup" }); 
 
         	d = domConstruct.create("div", { id: "mainGrid" });
         	domConstruct.place(d, "main");
 
           	divGrid  = domConstruct.create("div", { id: "gridContainer" });
-        	divPhoto = domConstruct.create("div", { id: "photoContainer" });         	
-      //  	divText  = domConstruct.create("div", { id: "photoText" });
-        	
+        	divPhoto = domConstruct.create("div", { id: "gridNode" });       	
         	domConstruct.place(divPhoto, dom.byId("mainGrid"));
-        //	domConstruct.place(divText, dom.byId("mainGrid"));
 			
-            id = 4;
-            
-            thumbnailStore.query("/" + id).then(function (data) {					
-				photo = new PhotoWidget({ theData: data},"photoContainer");
-           		fade("In", "photoContainer" )
-			}); 
+            id = 1;			
+// ----------------
+           markupStore.query("/search/" + id);
+
+   				var _grid; 
+// 
+                _grid = new(declare([DataGrid, Selection]))({
+                    store: markupStore, // a Dojo object store - css stuff for column widths, etc
+                    columns: [
+                    	{ label: "Label",       field: 'label',       sortable: false }, 
+                    	{ label: "Color",       field: "color",       sortable: false } 
+                    ],
+                    "class": "sage",
+                    selectionMode: "single" }, divPhoto);
+// 
+                _grid.on("dgrid-select", function (event) {
+                	console.log(event)
+                });
+  					// topic.publish("havePhoto", event.rows[0].data);
+  					
+fade("In", "photoContainer" )
+                			
 		},
 		fade = function(dir,node) {
 			if (dir === 'Out') { baseFx.fadeOut({ node: dom.byId(node), duration : 800 }).play(); }

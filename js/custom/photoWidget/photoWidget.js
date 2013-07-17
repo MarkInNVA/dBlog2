@@ -262,16 +262,19 @@ define(["dojo/_base/declare","dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo
 			 doublClickHandler = image.connect("ondblclick", function(e) {
 			 	var x, y;	
 				// if this gets too close to doubleClickHandler, doesn't work right. Can keep on adding red segments
-				clickHandler.remove();
 
 				clearTimeout(timer)
 				
 				x = e.offsetX === undefined ? e.layerX : e.offsetX;
 				y = e.offsetY === undefined ? e.layerY :e.offsetY;
 				
-				onHandle.remove();
-				
-				doublClickHandler.remove()					
+				timer = setTimeout(function() { 
+				 //	why?
+					onEnd: doublClickHandler.remove()
+					clickHandler.remove();
+					onHandle.remove();
+				 }, 150);				
+									
 				 
 				path.lineTo(x, y);
 				path.closePath();

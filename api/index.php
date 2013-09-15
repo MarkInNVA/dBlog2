@@ -31,6 +31,19 @@ $app->get('/comment/search/:query', 'findComments');
 
 $app->run();
 
+function getConnection() {
+//  $dbhost="igsaaaegaser003.er.usgs.gov";
+    $dbhost="localhost";
+    $dbuser="loader";
+    $dbpass="loader";
+    $dbname="opPhotos";
+//    $dbname="db1";
+    $dbh = new PDO("pgsql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);  
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $dbh;
+}
+
+
 function getPhotos() {
 	$sql = 'select * FROM photos ORDER BY "Name"';
 	try {
@@ -136,17 +149,6 @@ function findByName($query) {
 	}
 }
 
-function getConnection() {
-	$dbhost="igsaaaegaser003.er.usgs.gov";
-//    $dbhost="localhost";
-	$dbuser="loader";
-	$dbpass="loader";
-    $dbname="opPhotos";
-//    $dbname="db1";
-	$dbh = new PDO("pgsql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	return $dbh;
-}
 
 function getMarkups() {
 	$sql = 'select * FROM photo_markup ORDER BY id';
